@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import CookieBar from "@/components/CookieBar";
 import { SITE, TRAINER } from "@/lib/content";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -33,7 +34,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="sk" className={jakarta.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {children}
+        <CookieBar />
+      </body>
     </html>
   );
 }
