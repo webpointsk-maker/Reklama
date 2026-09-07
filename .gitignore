@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.env
+.env.local
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+# Materiál stiahnutý zo stránky kvôli pravidlám Meta reklamy.
+# Sú to fotky klientov — nemajú čo robiť vo verejnom repozitári.
+_nepouzite-meta/
+
+# Vercel
+.vercel
