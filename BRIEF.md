@@ -50,39 +50,45 @@ formulár sa dá prejsť hneď. Vzor premenných je v `.env.example`.
 
 ## Čo treba doplniť
 
-Stránka je **obsahovo hotová a dá sa pozrieť celá** — texty vo `content.ts` sú
-napísané, nie sú to už `TODO`. Ostáva ich nahradiť skutočnosťou.
+Stránka je **hotová, nasadená a beží** na https://reklama-gold.vercel.app
+(Vercel, tím Webpoint, plán Hobby; repozitár `webpointsk-maker/Reklama`,
+súkromný). Obsah, obrázky aj právne stránky sú na mieste.
 
-**Zástupné (vymyslené) údaje — vymeniť pred spustením kampane:**
+**Potvrdené:** meno Peter Sámal, mesto Bratislava, telefonická konzultácia
+zadarmo, frekvencia tréningov podľa dohody, online vedenie robí.
 
-1. **Zvyšok identity** — meno (Peter Samal) je doplnené, ale mesto, doména,
-   telefón, e-mail, obchodné meno, IČO a adresa sú stále zástupné. Sú v `SITE`
-   v `content.ts`, každý riadok označený `ZASTUPNE`.
-2. **Recenzie sú podpísané krstným menom a iniciálou** (Anit Š., Dagmar B.,
-   Matúš P. …), lebo verejné odporúčanie na Facebooku nie je to isté ako súhlas
-   so zverejnením na webe. Ak si od klientov vypýtaš písomný súhlas, celé mená
-   sa dajú vrátiť — plné meno je silnejší dôkaz než iniciála.
-3. **Overiť zvyšné tvrdenia o službe** — frekvencia je už riešená ako
-   „podľa dohody", ale texty stále sľubujú odpoveď na WhatsApp do 24 hodín,
-   vyhodnotenie raz za štyri týždne a náhradu tréningu zrušeného trénerom
-   v tom istom týždni. Ak to tak nerobí, treba to prepísať.
+**Chýba, zoradené podľa dôležitosti:**
 
-**Čo ešte chýba úplne:**
+1. **Premenné prostredia na Verceli** — bez nich sa odoslaný lead len zapíše
+   do logov a je nenávratne preč. Nastavené sú Telegram a Meta; chýba
+   `RESEND_API_KEY` (bez neho `MAIL_FROM` a `MAIL_TO` nespravia nič) a všetky
+   štyri `GOOGLE_*`. Po pridaní treba **Redeploy**, inak sa neprejavia.
+   Kým to nie je hotové, na stránku nesmie viesť reklama.
+2. **Fakturačné údaje** — doména, telefón, e-mail, IČO a adresa sú `TODO`
+   v `SITE` v `content.ts`. Návštevník ich vidí v pätičke aj v ochrane údajov.
+   Zámerne tam nie sú vymyslené hodnoty: falošné IČO je horšie než viditeľné
+   TODO.
+3. **Právnu kontrolu textov** — `/ochrana-udajov` a `/obchodne-podmienky` sú
+   napísané, ale sú to návrhy, nie právny posudok. Je to na nich uvedené.
+4. **Súhlasy klientov s recenziami** — na stránke je 11 screenshotov, na
+   siedmich je celé meno a profilová fotka. Deployment je verejne prístupný
+   (má `noindex`, takže ho vyhľadávače nenájdú, ale kto pozná odkaz, uvidí ho).
+5. **Vlastná doména** — `reklama-gold.vercel.app` nie je adresa, ktorej ľudia
+   v reklame veria. Pripája sa vo *Settings → Domains*.
+6. **Overiť zvyšné tvrdenia o službe** — texty sľubujú odpoveď na WhatsApp do
+   24 hodín, vyhodnotenie raz za štyri týždne a náhradu tréningu zrušeného
+   trénerom v tom istom týždni. Ak to tak nerobí, treba to prepísať.
+7. **Video** → YouTube ako „nezaradené", ID do `HERO.youtubeId`. Kým je
+   prázdne, hero video blok vôbec nezobrazuje — stránka tým nevyzerá
+   nedokončene.
+8. **Vlastné logo** — komponenta `Logo` v `src/components/Hero.tsx` zatiaľ
+   vypisuje `TRAINER.name` ako text.
+9. **`META_TEST_EVENT_CODE` po testovaní zmazať** — kým tam je, udalosti idú
+   do testovacieho prúdu a nerátajú sa ako skutočné konverzie.
 
-4. **Screenshoty recenzií** → nahrať do `public/img/reviews`. Načítajú sa samé,
-   netreba nič dopisovať do kódu. Kým je priečinok prázdny, stránka zobrazuje
-   prepísané recenzie z `REVIEWS`; prvým nahratým obrázkom sa prepne na
-   screenshoty a text sa prestane zobrazovať.
-5. **Nové screenshoty správ** → nahrať do `public/img/uspechy`. Tiež sa
-   načítajú samé. Pred nahratím si over, že neobsahujú konkrétne čísla
-   o chudnutí ani zameranie na vzhľad — inak hrozí zamietnutie reklamy.
-5. **Video** → YouTube ako „nezaradené", ID do `HERO.youtubeId`. Kým je prázdne,
-   hero video blok vôbec nezobrazuje — stránka tým nevyzerá nedokončene.
-6. **Ochrana osobných údajov + obchodné podmienky + cookie lišta** — povinné,
-   stránky ešte neexistujú, hoci pätička aj formulár na ne odkazujú
-7. **Vlastné logo** — komponenta `Logo` v `src/components/Hero.tsx` zatiaľ
-   vypisuje `TRAINER.name` ako text
-8. **Premenné prostredia** podľa `.env.example` (Sheets, Resend, Telegram, Pixel)
+**Pridávanie obrázkov nevyžaduje zásah do kódu.** Súbory v `public/img/reviews`
+a `public/img/uspechy` sa načítajú samé, zoradené podľa názvu. Pred nahratím
+si over, že neobsahujú konkrétne čísla o chudnutí ani zameranie na vzhľad.
 
 ## Rozhodnutia, ktoré už padli (prevzaté z WebPointu)
 
