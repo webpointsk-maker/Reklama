@@ -10,9 +10,7 @@
  * ============================================================
  * ZASTUPNE UDAJE — VYMEN PRED SPUSTENIM KAMPANE
  * ============================================================
- * Meno je overene (Peter Samal). Mesto je Bratislava podla jeho
- * Instagramu — TREBA OVERIT, lebo na nom stoji otazka o dostupnosti vo
- * formulari: nespravne mesto by odfiltrovalo prave tych spravnych ludi.
+ * Meno (Peter Samal) aj mesto (Bratislava) su potvrdene.
  *
  * Domena, telefon, e-mail, ICO a adresa su TODO. Zamerne tam nie su
  * vymyslene hodnoty — falosne ICO v pate je horsie nez viditelne TODO.
@@ -40,7 +38,7 @@ export const SITE = {
 export const TRAINER = {
   /** ZASTUPNE — pouziva sa v nadpisoch, v pate aj v e-mailoch */
   name: "Peter Sámal",
-  city: "Bratislava", // z jeho Instagramu — OVERIT, na tomto stoji otazka o dostupnosti
+  city: "Bratislava", // potvrdene
 };
 
 export const HERO = {
