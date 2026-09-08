@@ -55,7 +55,7 @@ export function Heading({
   return (
     <div className={`mb-10 ${centered ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}`}>
       {eyebrow && (
-        <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-500">
+        <p className="wp-text-glow-sm mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-500">
           {eyebrow}
         </p>
       )}
@@ -114,7 +114,7 @@ export function WhatYouGet() {
         </div>
 
         <div className="wp-glow wp-lit rounded-2xl border border-brand-500/35 bg-brand-500/8 p-6 sm:p-8">
-          <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-500">
+          <p className="wp-text-glow-sm mb-6 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-500">
             Na vašej strane
           </p>
           <ul className="grid gap-5">
@@ -211,7 +211,7 @@ export function Trainers() {
               )}
 
               <h3 className="mt-5 text-lg font-bold text-ink">{t.name}</h3>
-              <p className="mt-1 text-sm font-semibold text-brand-600">{t.role}</p>
+              <p className="wp-text-glow-sm mt-1 text-sm font-semibold text-brand-600">{t.role}</p>
               <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{t.bio}</p>
             </article>
           </Reveal>
@@ -430,7 +430,7 @@ export function Process() {
           <li key={s.t}>
             <Reveal delay={i * 100} className="h-full">
               <div className={`${card} h-full p-6 transition duration-300 hover:border-line-2`}>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-brand-500/40 bg-brand-500/10 text-sm font-extrabold text-brand-500">
+                <span className="wp-text-glow-sm flex h-8 w-8 items-center justify-center rounded-full border border-brand-500/40 bg-brand-500/10 text-sm font-extrabold text-brand-500">
                   {i + 1}
                 </span>
                 <h3 className="mt-4 text-lg font-bold text-ink">{s.t}</h3>
@@ -458,7 +458,7 @@ export function Faq() {
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[15px] font-bold text-ink [&::-webkit-details-marker]:hidden">
               {f.q}
-              <span className="text-xl leading-none text-brand-500 transition group-open:rotate-45">
+              <span className="wp-text-glow-sm text-xl leading-none text-brand-500 transition group-open:rotate-45">
                 +
               </span>
             </summary>

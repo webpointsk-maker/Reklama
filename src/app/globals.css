@@ -191,6 +191,21 @@ body::before {
   filter: blur(40px);
 }
 
+/* --- žiara okolo modrého textu ---
+   Na bielom podklade to musi byt vyrazne jemnejsie nez na tmavom: silny
+   tien z modreho textu spravi rozmazanu skvrnu a pri malom pisme aj horsie
+   citatelny text. Preto su dve sily a mala sa pouziva vsade, kde je pismo
+   pod ~18px. Na chybove hlasky a vyvojarske poznamky sa glow nedava vobec —
+   tie maju upozornovat, nie svietit. */
+.wp-text-glow {
+  text-shadow:
+    0 0 18px rgba(31, 111, 235, 0.38),
+    0 0 46px rgba(31, 111, 235, 0.20);
+}
+.wp-text-glow-sm {
+  text-shadow: 0 0 12px rgba(31, 111, 235, 0.28);
+}
+
 /* --- karty: rozsvietia sa pod kurzorom --- */
 .wp-glow {
   position: relative;

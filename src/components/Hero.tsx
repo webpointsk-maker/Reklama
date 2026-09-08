@@ -20,7 +20,7 @@ export function Logo({ size = "md" }: { size?: "md" | "lg" }) {
         size === "lg" ? "text-2xl" : "text-xl"
       }`}
     >
-      <span className="text-brand-500">{first}</span>
+      <span className="wp-text-glow text-brand-500">{first}</span>
       {rest.join("")}
     </span>
   );
@@ -41,7 +41,7 @@ export default function Hero() {
 
         <h1 className="wp-in wp-d2 text-balance text-[2.1rem] font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]">
           {HERO.headline}{" "}
-          <span className="text-brand-500">{HERO.headlineAccent}</span>
+          <span className="wp-text-glow text-brand-500">{HERO.headlineAccent}</span>
         </h1>
 
         <p className="wp-in wp-d3 mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-2 sm:text-lg">
