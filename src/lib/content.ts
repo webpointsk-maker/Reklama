@@ -101,7 +101,7 @@ export const HERO = {
   // Detaily patria do sekcie "Co dostanete", nie do hero.
   sub:
     "Plán na mieru, spoločné tréningy v posilňovni a niekto, komu napíšete, " +
-    "keď si neviete rady. Žiadne hromadné PDF.",
+    "keď si neviete rady.",
   cta: "Chcem nezáväznú konzultáciu",
   ctaNote: "2 minúty · 5 otázok · konzultácia po telefóne zadarmo",
   // Ked pribudne video, sem pride ID z YouTube (nastavene ako "nezaradene").
