@@ -112,7 +112,7 @@ export const CAPACITY = {
   period: "na tento mesiac",
   note:
     "Trénujeme osobne, takže máme v týždni obmedzený počet hodín. Keď sa naplnia, " +
-    "ďalších klientov beriem až od nasledujúceho mesiaca.",
+    "ďalších klientov berieme až od nasledujúceho mesiaca.",
 };
 
 export const WHAT_YOU_GET = {
@@ -152,7 +152,7 @@ export const WHAT_YOU_GET = {
     },
     {
       t: "Držíte sa plánu medzi tréningami",
-      d: "Nie dokonale. Stačí, keď mi poviete, keď sa to nepodarí — podľa toho plán upravím.",
+      d: "Nie dokonale. Stačí, keď nám poviete, keď sa to nepodarí — podľa toho plán upravíme.",
     },
   ],
 };
