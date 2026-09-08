@@ -198,12 +198,18 @@ body::before {
    pod ~18px. Na chybove hlasky a vyvojarske poznamky sa glow nedava vobec —
    tie maju upozornovat, nie svietit. */
 .wp-text-glow {
+  /* Tri vrstvy: tesna drzi hranu pismen ostru, stredna robi samotnu
+     ziaru, siroka rozlieva svetlo do okolia. Bez tej tesnej by text
+     len vyzeral rozostreny. */
   text-shadow:
-    0 0 18px rgba(31, 111, 235, 0.38),
-    0 0 46px rgba(31, 111, 235, 0.20);
+    0 0 8px rgba(31, 111, 235, 0.55),
+    0 0 26px rgba(31, 111, 235, 0.45),
+    0 0 62px rgba(31, 111, 235, 0.32);
 }
 .wp-text-glow-sm {
-  text-shadow: 0 0 12px rgba(31, 111, 235, 0.28);
+  text-shadow:
+    0 0 7px rgba(31, 111, 235, 0.45),
+    0 0 20px rgba(31, 111, 235, 0.30);
 }
 
 /* --- karty: rozsvietia sa pod kurzorom --- */
