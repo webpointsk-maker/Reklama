@@ -75,16 +75,21 @@ export const TRAINERS: Trainer[] = [
     /**
      * Meno je z jeho Instagramu (@p_holubcik), kde je uvedene bez
      * diakritiky ako "Peter Holubcik" — OVERIT SPRAVNY TVAR.
-     * Zameranie, bio ani fotka sa z profilu zistit nedali (Instagram ich
-     * bez prihlasenia neposkytne), treba ich doplnit od neho.
-     * Fotku uloz do public/img/ a zapis cestu do `photo`; kym je prazdna,
-     * zobrazi sa iniciala v kruhu.
+     *
+     * ROLE A BIO SU NAPISANE NASLEPO, na ziadost zadavatela, kym pride
+     * jeho vlastne znenie. Su zamerne bez overitelnych tvrdeni: ziadne
+     * roky praxe, certifikaty, tituly ani vysledky. Hovoria o pristupe,
+     * nie o faktoch, takze sa nemozu ukazat ako nepravda. Aj tak ich daj
+     * precitat jemu — je to text o realnom cloveku pod jeho fotkou.
      */
     id: "holubcik",
     name: "Peter Holubčík",
-    role: "TODO — na čo sa zameriava",
-    photo: "",
-    bio: "TODO — dve vety o tom, s kým a s čím pracuje.",
+    role: "Tréning s dôrazom na techniku a zdravý pohyb",
+    photo: "/img/trener-holubcik.png",
+    bio:
+      "Vedie tréningy pokojne a s dôrazom na to, aby pohyb sedel telu, ktoré ho " +
+      "robí. Rád pracuje s ľuďmi, ktorí sa vracajú po pauze alebo chcú mať istotu, " +
+      "že cvičia správne.",
   },
 ];
 
