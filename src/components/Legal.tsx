@@ -61,7 +61,7 @@ export function Ul({ items }: { items: string[] }) {
 /** Upozornenie pre teba, nie pre navstevnika — pred spustenim vyries. */
 export function Todo({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-8 rounded-xl border border-dashed border-brand-500/40 bg-brand-500/8 px-4 py-3 text-sm text-brand-400">
+    <p className="mb-8 rounded-xl border border-dashed border-brand-500/40 bg-brand-500/8 px-4 py-3 text-sm text-brand-600">
       {children}
     </p>
   );

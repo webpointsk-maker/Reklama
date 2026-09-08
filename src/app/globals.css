@@ -1,42 +1,44 @@
 @import "tailwindcss";
 
-/* ---- Farby značky, tmavá verzia -------------------------------------
-   Modro-čierna identita: podklad je takmer čierny s modrým nádychom,
-   akcent je elektrická modrá. Modrá na buttonoch je zámerne tmavšia
-   (#1f6feb), aby na nej bol biely text čitateľný — svetlejší odtieň
-   brand-400 slúži na text na tmavom podklade, nie na plochy.
-   Landing page je zámerne jednotémová: tmavú identitu držíme aj u ľudí,
-   ktorí majú v systéme svetlý režim.
+/* ---- Farby značky, svetlá verzia -------------------------------------
+   Biely podklad, modrý akcent. Stránka je zámerne jednotémová: svetlú
+   identitu držíme aj u ľudí, ktorí majú v systéme tmavý režim.
+
+   POZOR NA ODTIENE MODREJ — na bielom sa správajú inak než na tmavom:
+   - brand-500 (#1f6feb) je plocha pod bielym textom (kontrast 4,63)
+   - brand-600 je akcentový TEXT na bielom (kontrast 6,55); brand-500 by
+     ako malý text tesne nesplnil AA
+   - brand-400 je svetlý odtieň LEN na plochy a obrysy, nikdy nie na text
 -------------------------------------------------------------------- */
 @theme {
   /* plochy */
-  --color-ground: #05070b;
-  --color-surface: #0a0e15;
-  --color-surface-2: #101620;
-  --color-surface-3: #18202c;
+  --color-ground: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-2: #f2f6fb;
+  --color-surface-3: #e6edf6;
 
   /* linky a obrysy */
-  --color-line: #1b2431;
-  --color-line-2: #293445;
+  --color-line: #dfe6f0;
+  --color-line-2: #c3d0e2;
 
   /* text */
-  --color-ink: #eef2f8;
-  --color-ink-2: #97a3b6;
-  --color-ink-3: #66738a;
+  --color-ink: #0d1520;
+  --color-ink-2: #4a5768;
+  --color-ink-3: #667488;
 
-  /* akcent — elektrická modrá; 500 je plocha pod bielym textom */
-  --color-brand-400: #6ba6ff;
+  /* akcent — modrá */
+  --color-brand-400: #4f92ff;
   --color-brand-500: #1f6feb;
   --color-brand-600: #1657c4;
   --color-brand-700: #0f4198;
 
   /* doplnková azúrová — len na svetelné efekty, nie na text */
   --color-sky-400: #7fd8f5;
-  --color-sky-500: #35b3dd;
-  --color-sky-600: #1e87ab;
+  --color-sky-500: #1e87ab;
+  --color-sky-600: #16657f;
 
   /* semanticke */
-  --color-good: #4fbe87;
+  --color-good: #1c8a5a;
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 
@@ -46,7 +48,7 @@
 html {
   scroll-behavior: smooth;
   background: var(--color-ground);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -56,8 +58,9 @@ body {
   position: relative;
 }
 
-/* Jemne svetelne skvrny v znackovych farbach — davaju tmavemu podkladu
-   hlbku, aby nepôsobil ako plocha cierna plocha. */
+/* Jemny modry nadych zhora, aby biela nebola uplne ploska.
+   Na bielom podklade musi byt vyrazne slabsi nez na tmavom — silnejsi
+   gradient tam nepôsobi ako svetlo, ale ako spinavy fliak. */
 body::before {
   content: "";
   position: fixed;
@@ -65,9 +68,8 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(70rem 40rem at 12% -8%, rgba(45, 125, 255, 0.13), transparent 60%),
-    radial-gradient(60rem 38rem at 92% 4%, rgba(53, 179, 221, 0.16), transparent 62%),
-    radial-gradient(80rem 50rem at 50% 108%, rgba(13, 40, 92, 0.55), transparent 70%);
+    radial-gradient(64rem 34rem at 50% -12%, rgba(31, 111, 235, 0.07), transparent 66%),
+    radial-gradient(50rem 30rem at 92% 8%, rgba(30, 135, 171, 0.05), transparent 68%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -87,7 +89,7 @@ body::before {
 
 ::selection {
   background: var(--color-brand-500);
-  color: #05070b;
+  color: #ffffff;
 }
 
 /* ---- Animácie -------------------------------------------------------
@@ -132,7 +134,7 @@ body::before {
   position: absolute;
   inset: -18px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(45, 125, 255,.45), transparent 68%);
+  background: radial-gradient(circle, rgba(31, 111, 235,.30), transparent 68%);
   animation: wp-glow 2.8s ease-in-out infinite;
   pointer-events: none;
 }
@@ -156,8 +158,8 @@ body::before {
   pointer-events: none;
   z-index: 0;
 }
-.wp-orb--brand { background: radial-gradient(circle, rgba(45, 125, 255,.42), transparent 70%); }
-.wp-orb--sky   { background: radial-gradient(circle, rgba(53, 179, 221,.40), transparent 70%); }
+.wp-orb--brand { background: radial-gradient(circle, rgba(31, 111, 235,.14), transparent 70%); }
+.wp-orb--sky   { background: radial-gradient(circle, rgba(30, 135, 171,.12), transparent 70%); }
 
 @keyframes wp-drift {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
@@ -173,8 +175,8 @@ body::before {
   pointer-events: none;
   background: radial-gradient(
     50% 50% at 50% 50%,
-    rgba(45, 125, 255, 0.55),
-    rgba(53, 179, 221, 0.30) 46%,
+    rgba(31, 111, 235, 0.16),
+    rgba(30, 135, 171, 0.10) 46%,
     transparent 72%
   );
   filter: blur(46px);
@@ -183,7 +185,7 @@ body::before {
   inset: -8% -6%;
   background: radial-gradient(
     58% 52% at 50% 0%,
-    rgba(45, 125, 255, 0.38),
+    rgba(31, 111, 235, 0.12),
     transparent 72%
   );
   filter: blur(40px);
@@ -202,8 +204,8 @@ body::before {
   padding: 1px;
   background: linear-gradient(
     140deg,
-    rgba(45, 125, 255, 0.75),
-    rgba(53, 179, 221, 0.45) 48%,
+    rgba(31, 111, 235, 0.55),
+    rgba(30, 135, 171, 0.30) 48%,
     transparent 72%
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -217,24 +219,24 @@ body::before {
 .wp-glow:hover::before { opacity: 1; }
 .wp-glow:hover {
   transform: translateY(-3px);
-  box-shadow: 0 22px 60px -28px rgba(45, 125, 255, .55);
+  box-shadow: 0 18px 44px -22px rgba(13, 21, 32, .28);
 }
 
 /* --- trvalá žiara okolo kľúčových panelov --- */
 .wp-lit {
   box-shadow:
-    0 0 0 1px rgba(45, 125, 255, .10),
-    0 28px 80px -40px rgba(45, 125, 255, .55);
+    0 0 0 1px rgba(31, 111, 235, .12),
+    0 24px 60px -34px rgba(13, 21, 32, .30);
 }
 
 /* --- tlačidlá --- */
 .wp-btn {
-  box-shadow: 0 10px 30px -14px rgba(45, 125, 255, .75);
+  box-shadow: 0 10px 26px -12px rgba(31, 111, 235, .55);
   transition: box-shadow .3s ease, transform .3s ease, background-color .3s ease;
 }
 .wp-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 44px -14px rgba(45, 125, 255, .95);
+  box-shadow: 0 16px 34px -12px rgba(31, 111, 235, .70);
 }
 
 @media (prefers-reduced-motion: reduce) {

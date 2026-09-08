@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE, TRAINER } from "@/lib/content";
+import { SITE, BRAND } from "@/lib/content";
 import { Legal, P, H2, Ul, Todo } from "@/components/Legal";
 
 export const metadata: Metadata = {
-  title: `Ochrana osobných údajov | ${TRAINER.name}`,
+  title: `Ochrana osobných údajov | ${BRAND.name}`,
   robots: { index: false, follow: false },
 };
 

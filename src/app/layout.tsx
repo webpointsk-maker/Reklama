@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import CookieBar from "@/components/CookieBar";
-import { SITE, TRAINER } from "@/lib/content";
+import { SITE, BRAND } from "@/lib/content";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: SITE.title,
     description: SITE.description,
     url: SITE.url,
-    siteName: TRAINER.name,
+    siteName: BRAND.name,
     locale: "sk_SK",
     type: "website",
   },

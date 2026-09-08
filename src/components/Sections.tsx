@@ -9,7 +9,8 @@ import {
   FAQ,
   GUARANTEE,
   SITE,
-  TRAINER,
+  BRAND,
+  TRAINERS,
 } from "@/lib/content";
 
 /* ---------- spolocne stavebne prvky ---------- */
@@ -80,7 +81,7 @@ function Check() {
 
 function Todo({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-6 rounded-xl border border-dashed border-brand-500/40 bg-brand-500/8 px-4 py-3 text-sm text-brand-400">
+    <p className="mb-6 rounded-xl border border-dashed border-brand-500/40 bg-brand-500/8 px-4 py-3 text-sm text-brand-600">
       {children}
     </p>
   );
@@ -97,7 +98,7 @@ export function WhatYouGet() {
       <div className="grid gap-5 lg:grid-cols-[2fr_1fr]">
         <div className={`${card} p-6 sm:p-8`}>
           <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.16em] text-ink-3">
-            Na mojej strane
+            Na našej strane
           </p>
           <ul className="grid gap-5 sm:grid-cols-2">
             {WHAT_YOU_GET.items.map((i) => (
@@ -128,7 +129,7 @@ export function WhatYouGet() {
             ))}
           </ul>
           <p className="mt-7 border-t border-brand-500/20 pt-5 text-sm text-ink-2">
-            To je celé. Nič iné od vás nepotrebujem.
+            To je celé. Nič iné od vás nepotrebujeme.
           </p>
         </div>
       </div>
@@ -165,6 +166,56 @@ export function ForWhom() {
             ))}
           </ul>
         </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- treneri ---------- */
+
+/**
+ * Kto vas bude trenovat.
+ *
+ * Pri sluzbe, kde clovek plati za cas konkretneho cloveka, je tvar
+ * silnejsi dokaz nez akykolvek text. Sekcia stoji vysoko — hned za
+ * formularom — aby navstevnik vedel, s kym bude hovorit.
+ *
+ * Trener bez fotky sa zobrazi s inicialou v kruhu, nie s prazdnym miestom.
+ */
+export function Trainers() {
+  return (
+    <Section id="treneri">
+      <Heading
+        eyebrow="Kto sme"
+        title="Kto vás bude trénovať"
+        sub="Tréning vedie jeden z nás dvoch — podľa toho, čo potrebujete a kedy môžete."
+      />
+      <div className="mx-auto grid max-w-3xl gap-5 sm:grid-cols-2">
+        {TRAINERS.map((t, i) => (
+          <Reveal key={t.id} delay={i * 90}>
+            <article className={`${card} h-full p-6 text-center sm:p-7`}>
+              {t.photo ? (
+                <img
+                  src={t.photo}
+                  alt={`${t.name} — tréner`}
+                  loading="lazy"
+                  className="mx-auto h-32 w-32 rounded-full border border-line object-cover object-top"
+                />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="mx-auto flex h-32 w-32 items-center justify-center rounded-full border border-line bg-surface-2 text-3xl font-extrabold text-ink-3"
+                >
+                  {t.name.startsWith("TODO") ? "?" : t.name[0]}
+                </span>
+              )}
+
+              <h3 className="mt-5 text-lg font-bold text-ink">{t.name}</h3>
+              <p className="mt-1 text-sm font-semibold text-brand-600">{t.role}</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{t.bio}</p>
+            </article>
+          </Reveal>
+        ))}
       </div>
     </Section>
   );
@@ -235,7 +286,7 @@ export function Stories() {
           <Reveal key={c.id} delay={i * 90}>
             <article className={`${card} h-full overflow-hidden transition duration-300 hover:border-line-2`}>
             <div className="p-6 sm:p-7">
-              <span className="inline-flex rounded-lg border border-brand-500/30 bg-brand-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-brand-400">
+              <span className="inline-flex rounded-lg border border-brand-500/30 bg-brand-500/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-brand-600">
                 {c.person}
               </span>
               <p className="mt-5 text-3xl font-extrabold tracking-tight text-ink">
@@ -355,7 +406,7 @@ export function Guarantee() {
       <div className="wp-lit relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-14 text-center sm:px-12">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(40rem_20rem_at_50%_0%,rgba(45,125,255,0.16),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(40rem_20rem_at_50%_0%,rgba(31,111,235,0.07),transparent_70%)]"
         />
         <div className="relative mx-auto max-w-3xl">
           <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
@@ -427,10 +478,10 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2">
         <div>
           <p className="text-lg font-extrabold">
-            <span className="text-ink">{TRAINER.name}</span>
+            <span className="text-ink">{BRAND.name}</span>
           </p>
           <p className="mt-2 max-w-sm text-sm text-ink-2">
-            Osobný tréning a vedenie — {TRAINER.city}. Tréningový plán, spoločné
+            Osobný tréning a vedenie — {BRAND.city}. Tréningový plán, spoločné
             tréningy a kontrola techniky.
           </p>
         </div>

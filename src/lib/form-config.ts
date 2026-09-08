@@ -15,7 +15,6 @@
  * reklame je oslovovanie osobnych charakteristik zakazane.
  */
 
-import { TRAINER } from "./content";
 
 export type StepType = "single" | "text" | "contact";
 
@@ -98,7 +97,7 @@ export const STEPS: Step[] = [
      */
     id: "note",
     question: "Čo ste doteraz skúšali a prečo to nevyšlo?",
-    help: "Stačia dve vety. Podľa toho viem, či vám viem pomôcť a čo by sme robili inak.",
+    help: "Stačia dve vety. Podľa toho vieme, či vám vieme pomôcť a čo by sme robili inak.",
     type: "text",
     minLength: 40,
     placeholder:

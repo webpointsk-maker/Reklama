@@ -25,7 +25,7 @@ export default function Capacity({ compact = false }: { compact?: boolean }) {
     <div
       className={[
         "mx-auto w-full rounded-2xl border border-brand-500/25 bg-surface/80 backdrop-blur",
-        "shadow-[0_0_40px_-18px_rgba(45,125,255,0.55)]",
+        "shadow-[0_0_40px_-18px_rgba(31,111,235,0.20)]",
         compact ? "max-w-md p-4" : "max-w-xl p-5",
       ].join(" ")}
     >
@@ -35,7 +35,7 @@ export default function Capacity({ compact = false }: { compact?: boolean }) {
         </p>
         <p className="text-sm font-semibold text-ink">
           Obsadených{" "}
-          <span className="tabular-nums text-brand-400">
+          <span className="tabular-nums text-brand-600">
             {taken} z {total}
           </span>{" "}
           miest
@@ -50,7 +50,7 @@ export default function Capacity({ compact = false }: { compact?: boolean }) {
             className={[
               "h-2 flex-1 rounded-full transition-colors",
               i < taken
-                ? "bg-brand-500 shadow-[0_0_10px_-1px_rgba(45,125,255,0.9)]"
+                ? "bg-brand-500 shadow-[0_0_10px_-1px_rgba(31,111,235,0.45)]"
                 : "bg-surface-2 ring-1 ring-inset ring-line-2",
             ].join(" ")}
           />
@@ -65,7 +65,7 @@ export default function Capacity({ compact = false }: { compact?: boolean }) {
         {full ? (
           <>
             <span className="font-semibold text-ink">Tento mesiac je plno.</span> Formulár
-            môžete vyplniť aj tak — ozvem sa vám hneď, ako sa miesto uvoľní.
+            môžete vyplniť aj tak — ozveme sa vám hneď, ako sa miesto uvoľní.
           </>
         ) : (
           <>

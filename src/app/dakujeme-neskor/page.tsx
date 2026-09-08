@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/Hero";
-import { TRAINER } from "@/lib/content";
+import { BRAND } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: `Ďakujeme za vyplnenie | ${TRAINER.name}`,
+  title: `Ďakujeme za vyplnenie | ${BRAND.name}`,
   robots: { index: false, follow: false },
 };
 
@@ -52,7 +52,7 @@ export default function DakujemeNeskor() {
 
           <p className="mt-8 rounded-xl border border-brand-500/30 bg-brand-500/12 px-5 py-4 text-[15px] font-semibold leading-relaxed text-ink">
             Nebudem vám volať ani nič ďalšie posielať. Keď budete chcieť začať,
-            vyplňte formulár znova — a nájdem si na vás čas.
+            vyplňte formulár znova — a nájdeme si na vás čas.
           </p>
         </div>
 

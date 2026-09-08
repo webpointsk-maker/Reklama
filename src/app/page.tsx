@@ -8,6 +8,7 @@ import {
   Heading,
   WhatYouGet,
   ForWhom,
+  Trainers,
   Achievements,
   Stories,
   Reviews,
@@ -45,7 +46,7 @@ export default function Home() {
           <div className="wp-in wp-d5">
             <Heading
               title="Zistíme za dve minúty, či si sadneme"
-              sub="Päť otázok. Ak podľa odpovedí dávam zmysel, zavolám vám ešte dnes — konzultácia po telefóne je zadarmo a nezáväzná. Ak si nesadneme, poviem vám to rovno a volať nebudem."
+              sub="Päť otázok. Ak podľa odpovedí dávame zmysel, zavoláme vám ešte dnes — konzultácia po telefóne je zadarmo a nezáväzná. Ak si nesadneme, povieme vám to rovno a volať nebudeme."
             />
             <QualForm />
           </div>
@@ -56,6 +57,7 @@ export default function Home() {
           ne este predtym, nez zacne citat detaily.
           Fotky pred/po tu boli a boli odstranene — Meta ich pri fitness
           zakazuje a kontroluje aj cielovu stranku. Su v _nepouzite-meta/. */}
+      <Trainers />
       <Achievements />
 
       <WhatYouGet />
@@ -72,14 +74,14 @@ export default function Home() {
           <div className="wp-lit relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-12 text-center sm:px-10">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(36rem_18rem_at_50%_100%,rgba(45,125,255,0.14),transparent_70%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(36rem_18rem_at_50%_100%,rgba(31,111,235,0.06),transparent_70%)]"
             />
             <div className="relative">
               <h2 className="text-balance text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
-                Prvý krok je najdôležitejší. Dajte mi dve minúty.
+                Prvý krok je najdôležitejší. Dajte nám dve minúty.
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-ink-2">
-                Vyplňte päť otázok a ak podľa odpovedí dávam zmysel, ozvem sa vám
+                Vyplňte päť otázok a ak podľa odpovedí dávame zmysel, ozveme sa vám
                 ešte dnes.
               </p>
               <a

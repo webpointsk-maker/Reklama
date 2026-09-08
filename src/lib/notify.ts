@@ -6,7 +6,7 @@
 import { Resend } from "resend";
 import type { Band } from "./scoring";
 import { BAND_LABEL } from "./scoring";
-import { SITE, TRAINER } from "./content";
+import { SITE, BRAND } from "./content";
 
 const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
@@ -32,21 +32,21 @@ export interface LeadSummary {
 
 export async function mailLead(lead: LeadSummary, qualified: boolean) {
   const subject = qualified
-    ? "Mám váš formulár — ozvem sa vám dnes"
+    ? "Máme váš formulár — ozveme sa vám dnes"
     : "Ďakujeme za vyplnenie formulára";
 
   const body = qualified
     ? [
         `Dobrý deň, ${lead.name},`,
         "",
-        "ďakujem za vyplnenie formulára. Mám ho a ozvem sa vám ešte dnes na číslo, ktoré ste zadali.",
+        "ďakujeme za vyplnenie formulára. Máme ho a ozveme sa vám ešte dnes na číslo, ktoré ste zadali.",
         "",
         "Hovor trvá zhruba 15 minút a nie je predajný — najprv sa pýtam ja.",
         "Premyslite si prosím jednu vec: ako vyzerá váš bežný týždeň a kedy",
         "reálne máte hodinu voľna. To je jediné, čo potrebujem vedieť, aby som",
         "vám vedel(a) povedať, či a ako vám viem pomôcť.",
         "",
-        TRAINER.name,
+        BRAND.name,
         SITE.url,
       ].join("\n")
     : [
@@ -54,13 +54,13 @@ export async function mailLead(lead: LeadSummary, qualified: boolean) {
         "",
         "ďakujem za vyplnenie formulára.",
         "",
-        "Napísali ste, že si zatiaľ len zisťujete možnosti — preto vám volať nebudem",
+        "Napísali ste, že si zatiaľ len zisťujete možnosti — preto vám volať nebudeme",
         "a nič ďalšie vám posielať nebudem.",
         "",
         "Vedené tréningy dávajú zmysel až vtedy, keď si viete vyhradiť čas pravidelne.",
-        "Keď to tak bude, vyplňte formulár znova a nájdem si na vás čas.",
+        "Keď to tak bude, vyplňte formulár znova a nájdeme si na vás čas.",
         "",
-        TRAINER.name,
+        BRAND.name,
         SITE.url,
       ].join("\n");
 

@@ -10,7 +10,8 @@
  * ============================================================
  * ZASTUPNE UDAJE — VYMEN PRED SPUSTENIM KAMPANE
  * ============================================================
- * Meno (Peter Samal) aj mesto (Bratislava) su potvrdene.
+ * Znacka je SPerformance, mesto Bratislava. Za znackou su dvaja
+ * treneri — viz TRAINERS nizsie.
  *
  * Domena, telefon, e-mail, ICO a adresa su TODO. Zamerne tam nie su
  * vymyslene hodnoty — falosne ICO v pate je horsie nez viditelne TODO.
@@ -20,34 +21,73 @@
  * ze nejde o realnych klientov.
  */
 
+export const BRAND = {
+  /** Nazov znacky. Pouziva sa ako logo, v titulkoch aj v podpise e-mailov. */
+  name: "SPerformance",
+  city: "Bratislava",
+};
+
 export const SITE = {
-  /** ZASTUPNE */
   url: "https://TODO.sk", // ZASTUPNE — doplnit domenu
-  title: "Peter Sámal — osobný tréner Bratislava",
+  title: `${BRAND.name} — osobný tréning ${BRAND.city}`,
   description:
     "Vedené tréningy a plán na mieru pre ľudí, ktorí chcú cvičiť pravidelne a s technikou pod kontrolou.",
   email: "TODO@TODO.sk", // ZASTUPNE — doplnit e-mail
   phone: "TODO", // ZASTUPNE — doplnit telefon
   business: {
-    name: "Peter Sámal", // doplnit obchodne meno, ak je ine
+    name: "TODO", // ZASTUPNE — doplnit obchodne meno (fakturacny subjekt)
     ico: "TODO", // ZASTUPNE — vymyslene ICO v pate je horsie nez viditelne TODO
     address: "TODO", // ZASTUPNE — doplnit fakturacnu adresu
   },
 };
 
-export const TRAINER = {
-  /** ZASTUPNE — pouziva sa v nadpisoch, v pate aj v e-mailoch */
-  name: "Peter Sámal",
-  city: "Bratislava", // potvrdene
-};
+export interface Trainer {
+  id: string;
+  name: string;
+  /** Jednoriadkovy popis — na co sa zameriava */
+  role: string;
+  /** Cesta do public/, alebo prazdne = zobrazi sa iniciala v kruhu */
+  photo: string;
+  bio: string;
+}
+
+/**
+ * Treneri.
+ *
+ * POZOR: pocet trenerov urcuje aj TON celej stranky. Kym bol trener jeden,
+ * texty boli v prvej osobe jednotneho cisla ("zostavim vam plan"). Odkedy
+ * su dvaja, hovoria v mnoznom ("zostavime"). Ak by ostal jeden, treba
+ * texty vratit spat — striedanie "ozvem sa" a "ozveme sa" je najviditelnejsi
+ * znak toho, ze stranka vznikla kopirovanim.
+ */
+export const TRAINERS: Trainer[] = [
+  {
+    id: "peter",
+    name: "Peter Sámal",
+    role: "Osobný tréning a vedenie v posilňovni",
+    photo: "/img/trener.png",
+    bio:
+      "Vedie klientov od úplných začiatkov aj po dlhšej pauze. Dbá na techniku " +
+      "od prvého tréningu a plán prispôsobuje tomu, čo človeku reálne vychádza " +
+      "v týždni.",
+  },
+  {
+    // TODO: doplnit udaje druheho trenera a fotku do public/img/
+    id: "druhy",
+    name: "TODO — meno druhého trénera",
+    role: "TODO — na čo sa zameriava",
+    photo: "",
+    bio: "TODO — dve vety o tom, s kým a s čím pracuje.",
+  },
+];
 
 export const HERO = {
   eyebrow: "Pre začiatočníkov aj návraty po pauze",
   headline: "Cvičte podľa plánu, nie podľa nálady.",
   headlineAccent: "A s niekým, kto vám stráži techniku.",
   sub:
-    "Zostavím vám tréningový plán na mieru, odcvičíme ho spolu v posilňovni a medzi " +
-    "tréningami mi môžete kedykoľvek napísať. Žiadne hromadné PDF — plán sa mení podľa " +
+    "Zostavíme vám tréningový plán na mieru, odcvičíme ho spolu v posilňovni a medzi " +
+    "tréningami nám môžete kedykoľvek napísať. Žiadne hromadné PDF — plán sa mení podľa " +
     "toho, ako vám to ide.",
   cta: "Chcem nezáväznú konzultáciu",
   ctaNote: "2 minúty · 5 otázok · konzultácia po telefóne zadarmo",
@@ -71,7 +111,7 @@ export const CAPACITY = {
   total: 10,
   period: "na tento mesiac",
   note:
-    "Trénujem osobne, takže mám v týždni obmedzený počet hodín. Keď sa naplnia, " +
+    "Trénujeme osobne, takže máme v týždni obmedzený počet hodín. Keď sa naplnia, " +
     "ďalších klientov beriem až od nasledujúceho mesiaca.",
 };
 
@@ -89,7 +129,7 @@ export const WHAT_YOU_GET = {
     },
     {
       t: "Spoločné tréningy",
-      d: "Trénujeme spolu v posilňovni a vediem vás od rozcvičky po posledný cvik. Koľkokrát týždenne, na tom sa dohodneme podľa toho, čo vám vychádza.",
+      d: "Trénujeme spolu v posilňovni a vedieme vás od rozcvičky po posledný cvik. Koľkokrát týždenne, na tom sa dohodneme podľa toho, čo vám vychádza.",
     },
     {
       t: "Kontrola techniky",
@@ -97,7 +137,7 @@ export const WHAT_YOU_GET = {
     },
     {
       t: "Komunikácia medzi tréningami",
-      d: "Napíšete mi na WhatsApp a odpoviem do 24 hodín — či ide o cvik, jedlo alebo o to, že vám niečo nesadlo.",
+      d: "Napíšete nám na WhatsApp a odpovieme do 24 hodín — či ide o cvik, jedlo alebo o to, že vám niečo nesadlo.",
     },
     {
       t: "Pravidelné vyhodnotenie",
@@ -300,8 +340,8 @@ export const PROCESS = [
     d: "Päť otázok, dve minúty. Potrebujem vedieť, či vám viem reálne pomôcť.",
   },
   {
-    t: "Zavolám vám",
-    d: "Konzultácia po telefóne, zhruba 15 minút a nič za ňu neplatíte. Prejdeme, čo chcete dosiahnuť a či vám viem pomôcť.",
+    t: "Zavoláme vám",
+    d: "Konzultácia po telefóne, zhruba 15 minút a nič za ňu neplatíte. Prejdeme, čo chcete dosiahnuť a či vám vieme pomôcť.",
   },
   {
     t: "Dohodneme sa",
@@ -309,7 +349,7 @@ export const PROCESS = [
   },
   {
     t: "Prvý tréning",
-    d: "Býva do týždňa. Prejdeme zdravotnú anamnézu, pozriem sa, ako sa hýbete, a skúsime prvé cviky. Stačí športové oblečenie, obuv do posilňovne a fľaša na vodu.",
+    d: "Býva do týždňa. Prejdeme zdravotnú anamnézu, pozrieme sa, ako sa hýbete, a skúsime prvé cviky. Stačí športové oblečenie, obuv do posilňovne a fľaša na vodu.",
   },
 ];
 
@@ -344,8 +384,8 @@ export const FAQ = [
 export const GUARANTEE = {
   title: "Čo vám viem sľúbiť",
   body:
-    "Sľubujem dodávku, nie číslo na váhe. Odtrénujem s vami všetky dohodnuté tréningy, " +
-    "na každom novom cviku si s vami prejdem techniku, na správu odpoviem do 24 hodín a raz " +
+    "Sľubujeme dodávku, nie číslo na váhe. Odtrénujeme s vami všetky dohodnuté tréningy, " +
+    "na každom novom cviku si s vami prejdeme techniku, na správu odpovieme do 24 hodín a raz " +
     "za štyri týždne plán spolu prehodnotíme. Ak niektorý tréning zruším ja, nahradím ho v tom " +
     "istom týždni. Koľko toho zo svojej strany urobíte vy, ovplyvniť neviem — a nikto, kto vám " +
     "vopred sľubuje čísla, to nevie tiež.",

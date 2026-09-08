@@ -133,7 +133,7 @@ export default function QualForm() {
       return;
     }
     if (!contact.consent) {
-      setError("Bez súhlasu so spracovaním údajov vám nemôžem zavolať.");
+      setError("Bez súhlasu so spracovaním údajov vám nemôžeme zavolať.");
       return;
     }
 
@@ -155,7 +155,7 @@ export default function QualForm() {
     } catch {
       setBusy(false);
       setError(
-        "Odoslanie sa nepodarilo. Skúste to prosím ešte raz, alebo mi napíšte priamo.",
+        "Odoslanie sa nepodarilo. Skúste to prosím ešte raz, alebo nám napíšte priamo.",
       );
     }
   }
@@ -263,7 +263,7 @@ function OptionList({
               "flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-3.5 text-left text-[15px] font-medium transition",
               active
                 ? "border-brand-500 bg-brand-500/12 text-ink"
-                : "border-line bg-surface text-ink hover:border-brand-500/40 hover:bg-surface-2 hover:shadow-[0_0_26px_-8px_rgba(45,125,255,0.6)]",
+                : "border-line bg-surface text-ink hover:border-brand-500/40 hover:bg-surface-2 hover:shadow-[0_0_26px_-8px_rgba(31,111,235,0.22)]",
             ].join(" ")}
           >
             <span>{o.label}</span>
@@ -369,7 +369,7 @@ function ContactStep({
             className={inputCls}
           />
         </Field>
-        <Field label="Telefón" required hint="Volám z čísla +421">
+        <Field label="Telefón" required hint="Voláme z čísla +421">
           <input
             required
             type="tel"
@@ -440,7 +440,7 @@ function ContactStep({
       </label>
 
       {error && (
-        <p className="mt-4 rounded-lg bg-brand-500/12 px-4 py-3 text-sm font-medium text-brand-400">
+        <p className="mt-4 rounded-lg bg-brand-500/12 px-4 py-3 text-sm font-medium text-brand-600">
           {error}
         </p>
       )}
@@ -453,7 +453,7 @@ function ContactStep({
         {busy ? "Odosielam…" : "Odoslať a nechať si zavolať"}
       </button>
       <p className="mt-3 text-center text-xs text-ink-2">
-        Ozvem sa ešte dnes. Žiadne automatické e-maily navyše.
+        Ozveme sa ešte dnes. Žiadne automatické e-maily navyše.
       </p>
     </form>
   );

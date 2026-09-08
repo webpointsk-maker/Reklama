@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/Hero";
-import { REVIEWS, TRAINER } from "@/lib/content";
+import { REVIEWS, BRAND } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: `Ďakujeme — ozvem sa vám dnes | ${TRAINER.name}`,
+  title: `Ďakujeme — ozveme sa vám dnes | ${BRAND.name}`,
   robots: { index: false, follow: false },
 };
 
@@ -37,10 +37,10 @@ export default function Dakujeme() {
           </span>
 
           <h1 className="mt-5 text-balance text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl">
-            Mám to. Ozvem sa vám ešte dnes.
+            Máme to. Ozveme sa vám ešte dnes.
           </h1>
           <p className="mt-4 text-lg text-ink-2">
-            Volám z čísla s predvoľbou +421. Ak to nestihnete zdvihnúť, pošlem vám SMS
+            Voláme z čísla s predvoľbou +421. Ak to nestihnete zdvihnúť, pošleme vám SMS
             a skúsim to ešte raz.
           </p>
 

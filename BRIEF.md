@@ -1,4 +1,4 @@
-# Landing page pre fitness trénera — zadanie a stav
+# SPerformance — landing page, zadanie a stav
 
 > **Pre nový chat:** prečítaj tento súbor a pokračuj podľa neho.
 > Projekt už beží, kompiluje sa a má hotovú celú technickú časť.
@@ -94,7 +94,7 @@ si over, že neobsahujú konkrétne čísla o chudnutí ani zameranie na vzhľad
 
 Boli overené v praxi na predošlom projekte, netreba ich znova riešiť:
 
-- **Tmavý dizajn**, nie biele pozadie
+- ~~Tmavý dizajn~~ → **biele pozadie** (zmenené 8. 9. 2026 na žiadosť zadávateľa)
 - **Formulár hneď pod videom**, teda úplne hore — nie na konci stránky
 - **Žiadny cenník na stránke**
 - **Sľubujeme proces a dodávku, nikdy nie výsledok**
@@ -103,7 +103,23 @@ Boli overené v praxi na predošlom projekte, netreba ich znova riešiť:
 - **Ukazovateľ kapacity sa mení ručne** a musí byť pravdivý
 - Texty na jednom mieste (`content.ts`), obsah sa needituje v komponentoch
 
-Rozhodnuté priamo pre tento projekt (7. 9. 2026):
+Rozhodnuté 8. 9. 2026:
+
+- **Značka je SPerformance**, nie meno trénera. Nesie ju `BRAND` v `content.ts`;
+  logo je typografický znak (wordmark) so zvýrazneným „S", lebo vektorové logo
+  zatiaľ neexistuje. Keď príde, mení sa len komponenta `Logo` v `Hero.tsx`.
+- **Za značkou sú dvaja tréneri** (`TRAINERS`). Peter Sámal je doplnený, druhý
+  má zástupné údaje a zobrazuje sa s otáznikom namiesto fotky.
+- **Svetlý dizajn na bielom podklade.** Pozor na odtiene modrej: `brand-500`
+  je plocha pod bielym textom, akcentový TEXT musí byť `brand-600` (na bielom
+  má 6,57 oproti 4,23 pri `brand-500`, čo by pri malom písme nesplnilo AA).
+  `brand-400` je len na plochy a obrysy, nikdy nie na text. Tiene sú neutrálne
+  sivé, nie modré — modrý tieň na bielom vyzerá ako chyba tlače.
+- **Texty hovoria v množnom čísle**, lebo tréneri sú dvaja. Ak by ostal jeden,
+  treba ich vrátiť do jednotného — striedanie „ozvem sa" a „ozveme sa" je
+  najviditeľnejší znak toho, že stránka vznikla kopírovaním.
+
+Rozhodnuté 7. 9. 2026:
 
 - **Tréner je Peter Sámal.** Mesto, doména, telefón, e-mail a fakturačné údaje
   sú zatiaľ zástupné — v `SITE` v `content.ts`, označené `ZASTUPNE`.

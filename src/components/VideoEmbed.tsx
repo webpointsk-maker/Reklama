@@ -20,7 +20,7 @@ export default function VideoEmbed({
   // prehrávač a navonok z neho ostane len sotva viditeľný opar.
   const frame =
     "relative aspect-video w-full overflow-hidden rounded-2xl border border-brand-500/25 bg-surface " +
-    "shadow-[0_0_0_1px_rgba(45,125,255,0.10),0_0_60px_-12px_rgba(45,125,255,0.45),0_30px_100px_-30px_rgba(53,179,221,0.45)]";
+    "shadow-[0_0_0_1px_rgba(31,111,235,0.12),0_0_60px_-12px_rgba(31,111,235,0.16),0_30px_100px_-30px_rgba(13,21,32,0.14)]";
 
   if (!youtubeId) {
     return (
@@ -57,7 +57,7 @@ export default function VideoEmbed({
           loading="eager"
         />
         <span className="absolute inset-0 flex items-center justify-center bg-ground/25">
-          <span className="wp-pulse relative flex h-16 w-16 items-center justify-center rounded-full bg-brand-500 shadow-[0_0_40px_rgba(45,125,255,0.5)] transition duration-300 group-hover:scale-110 sm:h-20 sm:w-20">
+          <span className="wp-pulse relative flex h-16 w-16 items-center justify-center rounded-full bg-brand-500 shadow-[0_0_40px_rgba(31,111,235,0.30)] transition duration-300 group-hover:scale-110 sm:h-20 sm:w-20">
             <svg viewBox="0 0 24 24" className="ml-1 h-7 w-7 fill-white sm:h-8 sm:w-8">
               <path d="M8 5v14l11-7z" />
             </svg>
