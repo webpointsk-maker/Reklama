@@ -90,6 +90,26 @@ zadarmo, frekvencia tréningov podľa dohody, online vedenie robí.
 a `public/img/uspechy` sa načítajú samé, zoradené podľa názvu. Pred nahratím
 si over, že neobsahujú konkrétne čísla o chudnutí ani zameranie na vzhľad.
 
+## Nasadzovanie — pozor na autora commitov
+
+Projekt beží na Verceli (tím Webpoint, plán **Hobby**) a je napojený na
+súkromný repozitár `webpointsk-maker/Reklama`.
+
+**Hobby plán pri súkromnom repozitári nasadí len commity, ktorých autor má
+prístup k projektu na Verceli.** Commit s cudzou e-mailovou adresou sa
+nenasadí — Vercel ho označí ako `Blocked` a naživo zostane predošlá verzia.
+Nie je to chyba buildu a v logoch to nevyzerá ako chyba, takže sa to hľadá
+zle.
+
+Preto je v repozitári nastavené:
+
+```
+git config user.name  "webpointsk-maker"
+git config user.email "326204548+webpointsk-maker@users.noreply.github.com"
+```
+
+Ak by nasadenia znova začali byť `Blocked`, over ako prvé `git log --format="%an <%ae>"`.
+
 ## Rozhodnutia, ktoré už padli (prevzaté z WebPointu)
 
 Boli overené v praxi na predošlom projekte, netreba ich znova riešiť:
