@@ -45,8 +45,8 @@ export default function Home() {
         <div className="mx-auto w-full max-w-4xl">
           <div className="wp-in wp-d5">
             <Heading
-              title="Zistíme za dve minúty, či si sadneme"
-              sub="Päť otázok. Ak podľa odpovedí dávame zmysel, zavoláme vám ešte dnes — konzultácia po telefóne je zadarmo a nezáväzná. Ak si nesadneme, povieme vám to rovno a volať nebudeme."
+              title="Zistíme, či si sadneme"
+              sub="Ak podľa odpovedí dávame zmysel, zavoláme vám ešte dnes. Ak nie, povieme to rovno a volať nebudeme."
             />
             <QualForm />
           </div>

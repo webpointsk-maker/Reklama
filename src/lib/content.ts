@@ -97,10 +97,11 @@ export const HERO = {
   eyebrow: "Pre začiatočníkov aj návraty po pauze",
   headline: "Cvičte podľa plánu, nie podľa nálady.",
   headlineAccent: "A s niekým, kto vám stráži techniku.",
+  // Tri veci a dost: plan, spolocne treningy, dostupnost medzi nimi.
+  // Detaily patria do sekcie "Co dostanete", nie do hero.
   sub:
-    "Zostavíme vám tréningový plán na mieru, odcvičíme ho spolu v posilňovni a medzi " +
-    "tréningami nám môžete kedykoľvek napísať. Žiadne hromadné PDF — plán sa mení podľa " +
-    "toho, ako vám to ide.",
+    "Plán na mieru, spoločné tréningy v posilňovni a niekto, komu napíšete, " +
+    "keď si neviete rady. Žiadne hromadné PDF.",
   cta: "Chcem nezáväznú konzultáciu",
   ctaNote: "2 minúty · 5 otázok · konzultácia po telefóne zadarmo",
   // Ked pribudne video, sem pride ID z YouTube (nastavene ako "nezaradene").
