@@ -72,9 +72,16 @@ export const TRAINERS: Trainer[] = [
       "v týždni.",
   },
   {
-    // TODO: doplnit udaje druheho trenera a fotku do public/img/
-    id: "druhy",
-    name: "TODO — meno druhého trénera",
+    /**
+     * Meno je z jeho Instagramu (@p_holubcik), kde je uvedene bez
+     * diakritiky ako "Peter Holubcik" — OVERIT SPRAVNY TVAR.
+     * Zameranie, bio ani fotka sa z profilu zistit nedali (Instagram ich
+     * bez prihlasenia neposkytne), treba ich doplnit od neho.
+     * Fotku uloz do public/img/ a zapis cestu do `photo`; kym je prazdna,
+     * zobrazi sa iniciala v kruhu.
+     */
+    id: "holubcik",
+    name: "Peter Holubčík",
     role: "TODO — na čo sa zameriava",
     photo: "",
     bio: "TODO — dve vety o tom, s kým a s čím pracuje.",

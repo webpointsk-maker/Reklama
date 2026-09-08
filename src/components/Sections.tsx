@@ -241,7 +241,7 @@ export function Achievements() {
     <Section id="dosahy" panel>
       <Heading
         eyebrow="Počas spolupráce"
-        title="Čo mi klienti píšu cestou"
+        title="Čo nám klienti píšu cestou"
         sub="Správy, ktoré prišli v priebehu, nie na konci."
       />
       <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
