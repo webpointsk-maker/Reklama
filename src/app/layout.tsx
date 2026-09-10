@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070b", // musí sedieť s --color-ground v globals.css
+  themeColor: "#ffffff", // musí sedieť s --color-ground v globals.css
   width: "device-width",
   initialScale: 1,
 };
