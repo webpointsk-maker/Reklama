@@ -30,7 +30,8 @@ export default function OchranaUdajov() {
       <H2>Kto spracúva vaše údaje</H2>
       <P>
         Prevádzkovateľom je {SITE.business.name}, IČO {SITE.business.ico},
-        so sídlom {SITE.business.address}. Kontakt: {SITE.email}
+        DIČ {SITE.business.dic}, so sídlom {SITE.business.address}. Kontakt:{" "}
+        {SITE.email}
         {SITE.phone !== "TODO" ? `, ${SITE.phone}` : ""}.
       </P>
 

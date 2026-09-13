@@ -29,8 +29,8 @@ export default function ObchodnePodmienky() {
 
       <H2>Kto službu poskytuje</H2>
       <P>
-        {SITE.business.name}, IČO {SITE.business.ico}, so sídlom{" "}
-        {SITE.business.address}. Kontakt: {SITE.email}
+        {SITE.business.name}, IČO {SITE.business.ico}, DIČ {SITE.business.dic},
+        so sídlom {SITE.business.address}. Kontakt: {SITE.email}
         {SITE.phone !== "TODO" ? `, ${SITE.phone}` : ""}.
       </P>
 

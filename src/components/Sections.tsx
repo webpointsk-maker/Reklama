@@ -488,9 +488,12 @@ export function Footer() {
         <div className="text-sm text-ink-2">
           <p>{SITE.business.name}</p>
           <p>
-            IČO {SITE.business.ico}
+            IČO {SITE.business.ico} · DIČ {SITE.business.dic}
           </p>
           <p>{SITE.business.address}</p>
+          {SITE.business.register ? (
+            <p className="mt-1 text-xs">{SITE.business.register}</p>
+          ) : null}
           <p className="mt-3">
             <a href={`mailto:${SITE.email}`} className="text-ink underline underline-offset-4">
               {SITE.email}
