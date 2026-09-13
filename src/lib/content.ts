@@ -77,31 +77,37 @@ export const TRAINERS: Trainer[] = [
      * diakritiky ako "Peter Holubcik" — OVERIT SPRAVNY TVAR.
      *
      * ROLE A BIO SU NAPISANE NASLEPO, na ziadost zadavatela, kym pride
-     * jeho vlastne znenie. Su zamerne bez overitelnych tvrdeni: ziadne
-     * roky praxe, certifikaty, tituly ani vysledky. Hovoria o pristupe,
-     * nie o faktoch, takze sa nemozu ukazat ako nepravda. Aj tak ich daj
-     * precitat jemu — je to text o realnom cloveku pod jeho fotkou.
+     * jeho vlastne znenie. Daj mu ich precitat — je to text o realnom
+     * cloveku pod jeho fotkou.
+     *
+     * POZOR NA "vystudoval medicinu": to je JEDINE overitelne tvrdenie na
+     * celej stranke o konkretnom cloveku a zadavatel ho chce mat vpredu.
+     * Kym ho Peter nepotvrdi, je to riziko — nepravdive tvrdenie o vzdelani
+     * je horsie nez ziadne. Formulacia je zamerne o VZDELANI a pohlade na
+     * pohyb, nie o zdravotnej starostlivosti: stranka nesmie vyzerat, ze
+     * tu niekto diagnostikuje alebo lieci.
      */
     id: "holubcik",
     name: "Peter Holubčík",
-    role: "Tréning s dôrazom na techniku a zdravý pohyb",
+    role: "Vyštudovaná medicína · tréning s dôrazom na techniku",
     photo: "/img/trener-holubcik.png",
     bio:
-      "Vedie tréningy pokojne a s dôrazom na to, aby pohyb sedel telu, ktoré ho " +
-      "robí. Rád pracuje s ľuďmi, ktorí sa vracajú po pauze alebo chcú mať istotu, " +
-      "že cvičia správne.",
+      "Vyštudoval medicínu, takže sa na pohyb pozerá aj z pohľadu toho, ako telo " +
+      "funguje a čo mu škodí. Tréningy vedie pokojne a s dôrazom na to, aby pohyb " +
+      "sedel telu, ktoré ho robí. Rád pracuje s ľuďmi, ktorí sa vracajú po pauze " +
+      "alebo chcú mať istotu, že cvičia správne.",
   },
 ];
 
 export const HERO = {
   eyebrow: "Pre začiatočníkov aj návraty po pauze",
-  headline: "Cvičte podľa plánu, nie podľa nálady.",
-  headlineAccent: "A s niekým, kto vám stráži techniku.",
+  headline: "Prestaňte s pokusmi a omylmi.",
+  headlineAccent: "Získajte postavu vďaka presnému plánu a trénerom, ktorí dbajú na vašu techniku.",
   // Tri veci a dost: plan, spolocne treningy, dostupnost medzi nimi.
   // Detaily patria do sekcie "Co dostanete", nie do hero.
   sub:
-    "Plán na mieru, spoločné tréningy v posilňovni a niekto, komu napíšete, " +
-    "keď si neviete rady.",
+    "Systém na mieru, bezpečné tréningy pod odborným dohľadom a neustála " +
+    "podpora vždy, keď ju potrebujete.",
   cta: "Chcem nezáväznú konzultáciu",
   ctaNote: "2 minúty · 5 otázok · konzultácia po telefóne zadarmo",
   // Ked pribudne video, sem pride ID z YouTube (nastavene ako "nezaradene").
@@ -138,7 +144,7 @@ export const WHAT_YOU_GET = {
     },
     {
       t: "Stravovacie odporúčania",
-      d: "Jednoduché pravidlá do vášho bežného dňa. Žiadne váženie gramov ani zoznam zakázaných potravín.",
+      d: "Jednoduché pravidlá do vášho bežného dňa. Žiadny jedálniček, kde sa dokola opakuje päť jedál, ani zoznam zakázaných potravín.",
     },
     {
       t: "Spoločné tréningy",
@@ -350,15 +356,15 @@ export const REVIEW_SHOTS: { src: string; alt: string }[] = [];
 export const PROCESS = [
   {
     t: "Vyplníte formulár",
-    d: "Päť otázok, dve minúty. Potrebujem vedieť, či vám viem reálne pomôcť.",
+    d: "Päť otázok, dve minúty. Potrebujeme vedieť, či vám vieme reálne pomôcť.",
   },
   {
     t: "Zavoláme vám",
     d: "Konzultácia po telefóne, zhruba 15 minút a nič za ňu neplatíte. Prejdeme, čo chcete dosiahnuť a či vám vieme pomôcť.",
   },
   {
-    t: "Dohodneme sa",
-    d: "Ako často budete chodiť, kedy vám to vychádza a čo bude spolupráca obsahovať. Až tu padne reč na cenu.",
+    t: "Úvodná konzultácia",
+    d: "Stretneme sa na dvadsaťminútový pokec, kde sa bližšie porozprávame o tom, čo chcete dosiahnuť a ako vám s tým vieme pomôcť. Keď to bude dávať zmysel obom stranám, dohodneme prvé tréningy a cenu za spoluprácu.",
   },
   {
     t: "Prvý tréning",
@@ -369,7 +375,7 @@ export const PROCESS = [
 export const FAQ = [
   {
     q: "Musím už niečo vedieť alebo mať kondíciu?",
-    a: "Nie. Väčšina ľudí ku mne prichádza po dlhšej pauze alebo úplne od nuly. Prvé tréningy sú o tom naučiť sa pohyb správne, nie o výkone.",
+    a: "Nie. Väčšina ľudí k nám prichádza po dlhšej pauze alebo úplne od nuly. Prvé tréningy sú o tom naučiť sa pohyb správne, nie o výkone.",
   },
   {
     q: "Koľkokrát týždenne musím chodiť?",
@@ -377,7 +383,7 @@ export const FAQ = [
   },
   {
     q: "Čo ak nestíham alebo ochoriem?",
-    a: "Tréning presunieme, stačí dať vedieť deň dopredu. Pri chorobe alebo úraze spoluprácu pauzujeme, neukončujeme.",
+    a: "Tréning presunieme, stačí dať vedieť deň dopredu. Po chorobe alebo úraze si zameškané tréningy postupne dobehneme.",
   },
   {
     q: "Viažem sa na dlhé obdobie?",
@@ -385,7 +391,7 @@ export const FAQ = [
   },
   {
     q: "Musím držať prísnu diétu?",
-    a: "Nie. Dostanete niekoľko jednoduchých pravidiel, ktoré sa dajú dodržať aj v práci a na obede s kolegami. Nič nezakazujem.",
+    a: "Nie. Dostanete niekoľko jednoduchých pravidiel, ktoré sa dajú dodržať aj v práci a na obede s kolegami. Nič nezakazujeme.",
   },
 ];
 
@@ -397,9 +403,11 @@ export const FAQ = [
 export const GUARANTEE = {
   title: "Čo vám viem sľúbiť",
   body:
-    "Sľubujeme dodávku, nie číslo na váhe. Odtrénujeme s vami všetky dohodnuté tréningy, " +
-    "na každom novom cviku si s vami prejdeme techniku, na správu odpovieme do 24 hodín a raz " +
-    "za štyri týždne plán spolu prehodnotíme. Ak niektorý tréning zruším ja, nahradím ho v tom " +
-    "istom týždni. Koľko toho zo svojej strany urobíte vy, ovplyvniť neviem — a nikto, kto vám " +
-    "vopred sľubuje čísla, to nevie tiež.",
+    "Nesľubujeme vám zázraky za 30 dní. Sľubujeme vám 100 % podporu, precízny systém " +
+    "a to, že vás naučíme, ako sa starať o svoje telo udržateľne, bez jojo efektu. " +
+    "Odtrénujeme s vami všetky dohodnuté tréningy, na každom novom cviku si s vami " +
+    "prejdeme techniku, na správu odpovieme do 24 hodín a raz za štyri týždne plán " +
+    "spolu prehodnotíme. Ak niektorý tréning zrušíme my, nahradíme ho v tom istom " +
+    "týždni. Koľko toho zo svojej strany urobíte vy, ovplyvniť nevieme — a nikto, kto " +
+    "vám vopred sľubuje čísla, to nevie tiež.",
 };

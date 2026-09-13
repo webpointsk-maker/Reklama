@@ -46,7 +46,7 @@ export default function Home() {
           <div className="wp-in wp-d5">
             <Heading
               title="Zistíme, či si sadneme"
-              sub="Ak podľa odpovedí dávame zmysel, zavoláme vám ešte dnes. Ak nie, povieme to rovno a volať nebudeme."
+              sub="Ak to podľa odpovedí dáva zmysel, zavoláme vám ešte dnes. Ak nie, povieme to rovno a volať nebudeme."
             />
             <QualForm />
           </div>
