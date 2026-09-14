@@ -412,7 +412,7 @@ export const FAQ = [
  * preto je tu garantovana dodavka a starostlivost, nie cisla.
  */
 export const GUARANTEE = {
-  title: "Čo vám viem sľúbiť",
+  title: "Čo vám vieme sľúbiť",
   body:
     "Nesľubujeme vám zázraky za 30 dní. Sľubujeme vám 100 % podporu, precízny systém " +
     "a to, že vás naučíme, ako sa starať o svoje telo udržateľne, bez jojo efektu. " +
