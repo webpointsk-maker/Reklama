@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { STEPS } from "@/lib/form-config";
-import { scoreLead } from "@/lib/scoring";
-import { appendRow } from "@/lib/sheets";
-import { mailLead, mailTeam, pingPhone, type LeadSummary } from "@/lib/notify";
+import { STEPS, DISQUALIFYING } from "@/lib/form-config";
+import { scoreLead, KATEGORIA } from "@/lib/scoring";
+import { posliDoN8n } from "@/lib/n8n";
+import { mailLead, mailTeam, type LeadSummary } from "@/lib/notify";
 import { sendCapiEvent } from "@/lib/meta";
 
 export const runtime = "nodejs";
@@ -33,6 +33,16 @@ const CALL_TIME_LABEL: Record<string, string> = {
   afternoon: "popoludní",
   evening: "podvečer",
   any: "kedykoľvek",
+};
+
+/**
+ * Preco lead nejde na telefonat — kluc je "krok:moznost".
+ *
+ * Bez tohto by Petrovi prisiel e-mail s nalepkou "Nevhodný" a ziadnym
+ * vysvetlenim. Takto vidi dovod a vie sa rozhodnut sam.
+ */
+const DISQ_REASON: Record<string, string> = {
+  "start:later": "zatiaľ len zisťuje možnosti, začať nechce",
 };
 
 export async function POST(req: NextRequest) {
@@ -66,38 +76,48 @@ export async function POST(req: NextRequest) {
     labels,
   };
 
-  const row = [
-    new Date().toLocaleString("sk-SK", { timeZone: "Europe/Bratislava" }),
+  // Pri nevhodnom leade je dovod dolezitejsi nez skore — pisemy ho prvy.
+  const disqNote = !result.qualified
+    ? DISQUALIFYING.filter((r) => answers[r.step] === r.option)
+        .map((r) => DISQ_REASON[`${r.step}:${r.option}`])
+        .filter(Boolean)
+        .join(" · ")
+    : "";
+
+  const poznamka = disqNote ? `Nevolať — ${disqNote}` : "";
+
+  // Odoslanie do n8n je jedina cast, ktora nesmie ticho zlyhat — z neho
+  // vznika zaznam v NocoDB aj e-mail Petrovi. Ked zlyha, cely zaznam
+  // skonci v logu, odkial sa da vytiahnut rucne.
+  await posliDoN8n({
+    druh: "lead",
     leadId,
-    result.qualified ? "Nový — ozvať sa" : "Nurture",
-    result.score,
-    result.band,
-    result.contactWithinMinutes ? `${result.contactWithinMinutes} min` : "neozývať sa",
-    summary.name,
-    summary.phone,
-    summary.email,
-    summary.social,
-    summary.callTime,
-    labels["Cieľ"],
-    labels["Úroveň"],
-    labels["Frekvencia"],
-    labels["Kedy začať"],
-    (answers.note ?? "").slice(0, 500),
-    req.headers.get("referer") ?? "",
-  ];
+    cas: new Date().toISOString(),
+    stav: "Nový",
+    skore: result.score,
+    pasmo: result.band,
+    kategoria: KATEGORIA[result.band],
+    ozvatSaDo: result.contactWithinMinutes
+      ? `${result.contactWithinMinutes} min`
+      : "neozývať sa",
+    kvalifikovany: result.qualified,
+    meno: summary.name,
+    telefon: summary.phone,
+    email: summary.email,
+    profil: summary.social,
+    kedyVolat: summary.callTime,
+    ciel: labels["Cieľ"],
+    uroven: labels["Úroveň"],
+    frekvencia: labels["Frekvencia"],
+    kedyZacat: labels["Kedy začať"],
+    coSkusal: (answers.note ?? "").slice(0, 500),
+    poznamka,
+    zdroj: req.headers.get("referer") ?? "",
+  });
 
-  // Zapis do tabulky je jedina cast, ktora nesmie ticho zlyhat.
-  try {
-    await appendRow(row);
-  } catch (err) {
-    console.error("[lead] zápis do tabuľky zlyhal:", err, row);
-  }
-
-  // Notifikacie a meranie bezia paralelne; ziadna z nich nesmie zhodit odpoved.
   await Promise.allSettled([
     mailLead(summary, result.qualified),
     mailTeam(summary),
-    result.band === "A" || result.band === "B" ? pingPhone(summary) : Promise.resolve(),
     result.qualified
       ? sendCapiEvent({
           eventName: "Lead",
@@ -114,5 +134,11 @@ export async function POST(req: NextRequest) {
       : Promise.resolve(),
   ]);
 
-  return NextResponse.json({ qualified: result.qualified, band: result.band });
+  return NextResponse.json({
+    qualified: result.qualified,
+    band: result.band,
+    // Prehliadac ho posiela Mete ako hodnotu udalosti Lead — rovnaku,
+    // aku posiela Conversions API, aby sa obe cesty dali spárovať.
+    score: result.score,
+  });
 }

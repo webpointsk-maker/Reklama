@@ -138,26 +138,71 @@ export default function QualForm() {
     }
 
     setBusy(true);
+
+    /**
+     * POZOR NA ROZSAH TRY BLOKU.
+     *
+     * Vnutri smie byt IBA odoslanie a precitanie odpovede. Ked sa sem
+     * dostane cokolvek dalsie — meranie, presmerovanie — a ono zlyha,
+     * clovek uvidi "Odoslanie sa nepodarilo", hoci jeho lead je v tabulke
+     * uz davno. Vyplni to znova a trenerovi pride dvakrat.
+     */
+    let data: { qualified: boolean; score?: number };
+
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ leadId, answers, contact }),
       });
-      if (!res.ok) throw new Error("bad response");
-      const data = (await res.json()) as { qualified: boolean };
-      try {
-        localStorage.removeItem(STORAGE_KEY);
-      } catch {
-        /* ignoruj */
-      }
-      router.push(data.qualified ? "/dakujeme" : "/dakujeme-neskor");
-    } catch {
+      if (!res.ok) throw new Error(`server vrátil ${res.status}`);
+      data = await res.json();
+    } catch (err) {
+      console.error("[formulár] odoslanie zlyhalo:", err);
       setBusy(false);
       setError(
         "Odoslanie sa nepodarilo. Skúste to prosím ešte raz, alebo nám napíšte priamo.",
       );
+      return;
     }
+
+    // Od tohto riadku je lead ULOZENY. Nic dalsie uz nesmie skoncit chybovou
+    // hlaskou — najhorsie, co sa smie stat, je ze sa nezmeria konverzia.
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignoruj */
+    }
+
+    /**
+     * Udalost Lead pre Metu.
+     *
+     * IBA PRI KVALIFIKOVANOM LEADE. Keby sme hlasili kazde odoslanie
+     * formulara, Meta by sa naucila dorucovat najlacnejsie publikum —
+     * teda presne tych, ktorych formular filtruje.
+     *
+     * eventID je rovnake ako leadId a ako event_id v Conversions API,
+     * takze Meta obe cesty spari a nezapocita jeden lead dvakrat.
+     *
+     * fbq existuje len po suhlase v cookie liste. Vlastny try/catch je
+     * zamerne: blokovac reklam vie fbq nahradit necim, co vyhodi vynimku,
+     * a nezmerana konverzia nesmie vyzerat ako neodoslany formular.
+     */
+    if (data.qualified) {
+      try {
+        const fbq = (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq;
+        fbq?.(
+          "track",
+          "Lead",
+          data.score !== undefined ? { value: data.score, currency: "EUR" } : {},
+          { eventID: leadId },
+        );
+      } catch (err) {
+        console.warn("[formulár] meranie konverzie zlyhalo:", err);
+      }
+    }
+
+    router.push(data.qualified ? "/dakujeme" : "/dakujeme-neskor");
   }
 
   // Pruh sa plni podla poradia otazky. Percenta zamerne neuvadzame —

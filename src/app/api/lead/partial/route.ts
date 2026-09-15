@@ -1,20 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { STEPS } from "@/lib/form-config";
-import { appendRow, PARTIAL_TAB } from "@/lib/sheets";
+import { posliDoN8n } from "@/lib/n8n";
 
 export const runtime = "nodejs";
 
 /**
  * Priebezne ukladanie rozpracovaneho formulara.
  *
- * Preco to existuje: clovek, ktory vyplnil sest otazok a odisiel, uz o sebe
+ * Preco to existuje: clovek, ktory vyplnil pat otazok a odisiel, uz o sebe
  * povedal dost na to, aby sa oplatilo ozvat sa mu — ak stihol nechat kontakt.
- * Bez tohto endpointu by taky lead zmizol bez stopy.
  *
- * Riadky idu do samostatneho harka (PARTIAL_TAB) s vlastnou hlavickou
- * PARTIAL_HEADER — nemiesaju sa teda s hotovymi leadmi. Deduplikacia je po
- * leadId: platny je vzdy posledny riadok s danym ID. Ked bude leadov viac,
- * je to prva vec, ktoru sa oplati presunut do skutocnej databazy.
+ * Zaznamy idu do n8n s druhom "rozpracovane". Workflow si ich odlozi inam
+ * nez hotove leady a deduplikuje ich po leadId: platny je vzdy posledny.
  */
 export async function POST(req: NextRequest) {
   try {
@@ -26,13 +23,10 @@ export async function POST(req: NextRequest) {
     const contact = (body?.contact ?? {}) as Record<string, string>;
 
     // Ukladame az od tretej otazky — skorsie odchody nemaju vypovednu hodnotu.
-    // (Formular ma 5 krokov, takze to je zhruba polovica cesty.)
     if (Object.keys(answers).length < 3) {
       return NextResponse.json({ ok: true, skipped: true });
     }
 
-    // Rovnaky prevod ID -> text ako v hlavnom endpointe, aby sa harky
-    // dali citat vedla seba bez prekladania idcok.
     const label = (stepId: string) => {
       const optionId = answers[stepId];
       if (!optionId) return "";
@@ -40,23 +34,24 @@ export async function POST(req: NextRequest) {
       return step?.options?.find((o) => o.id === optionId)?.label ?? optionId;
     };
 
-    // Poradie musi sediet s PARTIAL_HEADER v src/lib/sheets.ts.
-    await appendRow(
-      [
-        new Date().toLocaleString("sk-SK", { timeZone: "Europe/Bratislava" }),
-        leadId,
-        String(body?.step ?? ""),
-        contact.name ?? "",
-        contact.phone ?? "",
-        contact.email ?? "",
-        label("goal"),
-        label("level"),
-        label("frequency"),
-        label("start"),
-        (answers.note ?? "").slice(0, 500),
-      ],
-      PARTIAL_TAB,
-    );
+    await posliDoN8n({
+      druh: "rozpracovane",
+      leadId,
+      cas: new Date().toISOString(),
+      odisielNaKroku: String(body?.step ?? ""),
+      meno: contact.name ?? "",
+      telefon: contact.phone ?? "",
+      email: contact.email ?? "",
+      profil: contact.social ?? "",
+      kedyVolat: contact.callTime ?? "",
+      ciel: label("goal"),
+      uroven: label("level"),
+      frekvencia: label("frequency"),
+      kedyZacat: label("start"),
+      coSkusal: (answers.note ?? "").slice(0, 500),
+      poznamka: "",
+      zdroj: req.headers.get("referer") ?? "",
+    });
   } catch (err) {
     console.error("[partial] uloženie zlyhalo:", err);
   }

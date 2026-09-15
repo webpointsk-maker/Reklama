@@ -1,6 +1,10 @@
 /**
- * Odchodzie notifikacie: e-mail leadovi, e-mail tebe, ping na telefon.
- * Vsetko je volitelne — bez premennych prostredia sa len zaloguje.
+ * Odchodzie e-maily: potvrdenie klientovi a upozornenie trenerovi.
+ *
+ * ZALOHA, NIE HLAVNA CESTA. E-maily standardne posiela workflow v n8n —
+ * tento subor je tu pre pripad, ze by n8n neposielalo. Bez RESEND_API_KEY
+ * sa nic neposle, len zaloguje, takze ked posiela n8n, nechaj tu premennu
+ * prazdnu — inak pride e-mail dvakrat.
  */
 
 import { Resend } from "resend";
@@ -106,38 +110,5 @@ async function send(to: string, subject: string, text: string) {
     await resend.emails.send({ from: FROM, to, subject, text });
   } catch (err) {
     console.error("[mail] odoslanie zlyhalo:", err);
-  }
-}
-
-/* ---------------- ping na telefon ---------------- */
-
-/**
- * Najlacnejsie vylepsenie konverzie v celom systeme: pri pasme A a B
- * dostanes upozornenie do minuty, nie az ked si otvoris mail.
- */
-export async function pingPhone(lead: LeadSummary) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chat = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chat) {
-    console.warn("[telegram] nie je nastavený — notifikácia sa neposlala");
-    return;
-  }
-
-  const text =
-    `🔥 ${lead.band} · ${lead.score}b — ${lead.name}\n` +
-    `${lead.phone}\n` +
-    `${lead.labels["Cieľ"] ?? ""}\n` +
-    `${lead.labels["Úroveň"] ?? ""} · frekvencia ${lead.labels["Frekvencia"] ?? ""}\n` +
-    (lead.social ? `${lead.social}\n` : "") +
-    `\n"${lead.blocker.slice(0, 200)}"`;
-
-  try {
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chat, text, disable_web_page_preview: true }),
-    });
-  } catch (err) {
-    console.error("[telegram] odoslanie zlyhalo:", err);
   }
 }

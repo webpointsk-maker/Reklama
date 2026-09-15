@@ -112,3 +112,20 @@ export const BAND_LABEL: Record<Band, string> = {
   C: "C — ozvať sa do 24 hodín",
   D: "D — neozývať sa, nurture",
 };
+
+/**
+ * To iste po ludsky — toto vidi trener v predmete e-mailu a v tabulke.
+ *
+ * Pismeno A az D je dobre na triedenie, ale clovek, ktoremu medzi
+ * treningami pipne telefon, potrebuje na prvy pohlad vediet, ci ma
+ * odpisat hned. Preto emoji a slovo, nie pismeno.
+ *
+ * "Nevhodny" NEZNAMENA zahodit — taky lead do tabulky aj do e-mailu
+ * pride rovnako, len sa nan netreba vrhnut.
+ */
+export const KATEGORIA: Record<Band, string> = {
+  A: "🔥 Horúci",
+  B: "🟡 Vlažný",
+  C: "🔵 Chladný",
+  D: "⚪ Nevhodný",
+};
