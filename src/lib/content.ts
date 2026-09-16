@@ -30,7 +30,7 @@ export const BRAND = {
 };
 
 export const SITE = {
-  url: "https://TODO.sk", // ZASTUPNE — doplnit domenu
+  url: "https://sperformance.webpointsk.com",
   title: `${BRAND.name} — osobný tréning ${BRAND.city}`,
   description:
     "Vedené tréningy a plán na mieru pre ľudí, ktorí chcú cvičiť pravidelne a s technikou pod kontrolou.",
