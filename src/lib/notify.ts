@@ -43,7 +43,7 @@ export async function mailLead(lead: LeadSummary, qualified: boolean) {
     ? [
         `Dobrý deň, ${lead.name},`,
         "",
-        "ďakujeme za vyplnenie formulára. Máme ho a ozveme sa vám ešte dnes na číslo, ktoré ste zadali.",
+        "ďakujeme za vyplnenie formulára. Máme ho a ozveme sa vám do 24 hodín na číslo, ktoré ste zadali.",
         "",
         "Hovor trvá zhruba 15 minút a nie je predajný — najprv sa pýtam ja.",
         "Premyslite si prosím jednu vec: ako vyzerá váš bežný týždeň a kedy",

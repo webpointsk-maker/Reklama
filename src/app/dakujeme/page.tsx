@@ -4,7 +4,7 @@ import { Logo } from "@/components/Hero";
 import { BRAND } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: `Ďakujeme — za chvíľu sa vám ozveme | ${BRAND.name}`,
+  title: `Ďakujeme — ozveme sa vám do 24 hodín | ${BRAND.name}`,
   robots: { index: false, follow: false },
 };
 
@@ -34,7 +34,7 @@ export default function Dakujeme() {
           </span>
 
           <h1 className="mt-5 text-balance text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl">
-            Ďakujeme, za chvíľu sa vám ozveme.
+            Ďakujeme, ozveme sa vám do 24 hodín.
           </h1>
         </div>
 

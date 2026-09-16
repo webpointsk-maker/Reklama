@@ -46,7 +46,7 @@ export default function Home() {
           <div className="wp-in wp-d5">
             <Heading
               title="Zistíme, či si sadneme"
-              sub="Ak to podľa odpovedí dáva zmysel, zavoláme vám ešte dnes. Ak nie, povieme to rovno a volať nebudeme."
+              sub="Ak to podľa odpovedí dáva zmysel, zavoláme vám do 24 hodín. Ak nie, povieme to rovno a volať nebudeme."
             />
             <QualForm />
           </div>
@@ -81,8 +81,8 @@ export default function Home() {
                 Prvý krok je najdôležitejší. Dajte nám dve minúty.
               </h2>
               <p className="mx-auto mt-3 max-w-xl text-ink-2">
-                Vyplňte päť otázok a ak podľa odpovedí dávame zmysel, ozveme sa vám
-                ešte dnes.
+                Vyplňte päť otázok a ak to podľa odpovedí dáva zmysel, ozveme sa vám
+                do 24 hodín.
               </p>
               <a
                 href="#formular"

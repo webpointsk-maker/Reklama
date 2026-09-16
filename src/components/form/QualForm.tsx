@@ -498,7 +498,7 @@ function ContactStep({
         {busy ? "Odosielam…" : "Odoslať a nechať si zavolať"}
       </button>
       <p className="mt-3 text-center text-xs text-ink-2">
-        Ozveme sa ešte dnes. Žiadne automatické e-maily navyše.
+        Ozveme sa do 24 hodín.
       </p>
     </form>
   );

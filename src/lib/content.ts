@@ -91,12 +91,10 @@ export const TRAINERS: Trainer[] = [
      * jeho vlastne znenie. Daj mu ich precitat — je to text o realnom
      * cloveku pod jeho fotkou.
      *
-     * POZOR NA "vystudoval medicinu": to je JEDINE overitelne tvrdenie na
-     * celej stranke o konkretnom cloveku a zadavatel ho chce mat vpredu.
-     * Kym ho Peter nepotvrdi, je to riziko — nepravdive tvrdenie o vzdelani
-     * je horsie nez ziadne. Formulacia je zamerne o VZDELANI a pohlade na
-     * pohyb, nie o zdravotnej starostlivosti: stranka nesmie vyzerat, ze
-     * tu niekto diagnostikuje alebo lieci.
+     * "Vystudoval medicinu" — POTVRDENE zadavatelom (16. 9. 2026).
+     * Formulacia je zamerne o VZDELANI a pohlade na pohyb, nie o zdravotnej
+     * starostlivosti: stranka nesmie vyzerat, ze tu niekto diagnostikuje
+     * alebo lieci — to by bolo problemom aj pre Meta reklamu.
      */
     id: "holubcik",
     name: "Peter Holubčík",
