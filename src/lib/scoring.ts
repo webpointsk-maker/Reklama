@@ -114,18 +114,21 @@ export const BAND_LABEL: Record<Band, string> = {
 };
 
 /**
- * To iste po ludsky — toto vidi trener v predmete e-mailu a v tabulke.
+ * Kategoria leadu — iba dve, aby sa v tabulke dalo rozhodnut jednym pohladom.
  *
- * Pismeno A az D je dobre na triedenie, ale clovek, ktoremu medzi
- * treningami pipne telefon, potrebuje na prvy pohlad vediet, ci ma
- * odpisat hned. Preto emoji a slovo, nie pismeno.
+ *   🔥 Horúci  = pasmo A a B, 50+ bodov. Oplati sa zavolat v ten isty den.
+ *   ❄️ Chladný = pasmo C a D. Slabsi lead alebo taky, co neprešiel filtrom.
  *
- * "Nevhodny" NEZNAMENA zahodit — taky lead do tabulky aj do e-mailu
- * pride rovnako, len sa nan netreba vrhnut.
+ * Styri kategorie (horuci / vlazny / chladny / nevhodny) boli na pouzivanie
+ * zbytocne jemne. Rozdiel medzi C a D sa nestratil: pri D je v stlpci
+ * Poznámka "Nevolať — dovod", takze je jasne, komu sa volat nema vobec.
+ *
+ * Pismeno pasma zostava v kode — rozhoduje o potvrdzovacom e-maile a o tom,
+ * ci sa Mete posiela udalost Lead. Kategoria je len jeho ludsky preklad.
  */
 export const KATEGORIA: Record<Band, string> = {
   A: "🔥 Horúci",
-  B: "🟡 Vlažný",
+  B: "🔥 Horúci",
   C: "❄️ Chladný",
-  D: "⚪ Nevhodný",
+  D: "❄️ Chladný",
 };
