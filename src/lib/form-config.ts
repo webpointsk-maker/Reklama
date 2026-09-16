@@ -105,7 +105,7 @@ export const STEPS: Step[] = [
   },
   {
     id: "contact",
-    question: "Kam sa vám mám ozvať?",
+    question: "Kam sa vám máme ozvať?",
     type: "contact",
   },
 ];
