@@ -26,7 +26,7 @@ export interface N8nLead {
   stav?: string;
   skore?: number;
   pasmo?: string;
-  /** to iste po ludsky: 🔥 Horúci / 🟡 Vlažný / 🔵 Chladný / ⚪ Nevhodný */
+  /** to iste po ludsky: 🔥 Horúci / 🟡 Vlažný / ❄️ Chladný / ⚪ Nevhodný */
   kategoria?: string;
   ozvatSaDo?: string;
   kvalifikovany?: boolean;

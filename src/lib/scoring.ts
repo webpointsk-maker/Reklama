@@ -126,6 +126,6 @@ export const BAND_LABEL: Record<Band, string> = {
 export const KATEGORIA: Record<Band, string> = {
   A: "🔥 Horúci",
   B: "🟡 Vlažný",
-  C: "🔵 Chladný",
+  C: "❄️ Chladný",
   D: "⚪ Nevhodný",
 };
