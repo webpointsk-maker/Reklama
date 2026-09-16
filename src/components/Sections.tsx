@@ -495,6 +495,11 @@ export function Footer() {
             <p className="mt-1 text-xs">{SITE.business.register}</p>
           ) : null}
           <p className="mt-3">
+            <a href={`tel:${SITE.phone.replace(/\s/g, "")}`} className="text-ink underline underline-offset-4">
+              {SITE.phone}
+            </a>
+          </p>
+          <p className="mt-1">
             <a href={`mailto:${SITE.email}`} className="text-ink underline underline-offset-4">
               {SITE.email}
             </a>

@@ -13,10 +13,9 @@
  * Znacka je SPerformance, mesto Bratislava. Za znackou su dvaja
  * treneri — viz TRAINERS nizsie.
  *
- * Fakturacne udaje uz su skutocne (S Performance s.r.o.). TODO ostava
- * pri DOMENE a TELEFONE a prazdny je zapis v obchodnom registri.
- * Nikdy tam nedavaj vymyslene hodnoty — falosne ICO v pate je horsie
- * nez viditelne TODO.
+ * Fakturacne udaje su kompletne a overene v obchodnom registri
+ * (S Performance s. r. o.). Nikdy tam nedavaj vymyslene hodnoty —
+ * falosne ICO v pate je horsie nez viditelne TODO.
  *
  * Rovnako STORIES — su oznacene `placeholder: true` a kym ten priznak
  * na niektorom pribehu ostane, stranka nad sekciou zobrazuje upozornenie,
@@ -35,20 +34,19 @@ export const SITE = {
   description:
     "Vedené tréningy a plán na mieru pre ľudí, ktorí chcú cvičiť pravidelne a s technikou pod kontrolou.",
   email: "petersamal.trener@gmail.com",
-  phone: "TODO", // ZASTUPNE — doplnit telefon
+  phone: "+421 951 457 384",
   business: {
-    name: "S Performance s.r.o.",
+    // Presne v tvare z obchodneho registra — s medzerami v "s. r. o."
+    name: "S Performance s. r. o.",
     ico: "57732353",
     dic: "2122908722",
     address: "Doležalova 3424/15C, 821 04 Bratislava – Ružinov",
     /**
      * Zapis v obchodnom registri — § 3a Obchodneho zakonnika ho na webe
      * s.r.o. vyzaduje spolu s obchodnym menom, sidlom, pravnou formou a ICO.
-     * Tvar: "Obchodny register Mestskeho sudu Bratislava III, oddiel: Sro,
-     * vlozka c. XXXXX/B". Kym je prazdny, v pate sa nezobrazi — ale CHYBA
-     * TAM, doplnit pred spustenim kampane.
+     * Overene na orsr.sk (vypis ID 766641), zapisane 9. 7. 2026.
      */
-    register: "",
+    register: "Obchodný register Mestského súdu Bratislava III, oddiel: Sro, vložka č. 201333/B",
   },
 };
 
