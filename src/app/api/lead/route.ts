@@ -76,7 +76,13 @@ export async function POST(req: NextRequest) {
     labels,
   };
 
-  // Pri nevhodnom leade je dovod dolezitejsi nez skore — pisemy ho prvy.
+  /**
+   * POZNAMKA JE LEN DOVOD, ziadny pokyn.
+   *
+   * Trener vola KAZDEMU, aj chladnym. Preto tu nesmie stat "Nevolat" —
+   * protirecilo by to tomu, na com sa zadavatel dohodol. Nalepka
+   * (horuci/chladny) povie, s akym ocakavanim ma volat, dovod povie preco.
+   */
   const disqNote = !result.qualified
     ? DISQUALIFYING.filter((r) => answers[r.step] === r.option)
         .map((r) => DISQ_REASON[`${r.step}:${r.option}`])
@@ -84,7 +90,7 @@ export async function POST(req: NextRequest) {
         .join(" · ")
     : "";
 
-  const poznamka = disqNote ? `Nevolať — ${disqNote}` : "";
+  const poznamka = disqNote;
 
   // Odoslanie do n8n je jedina cast, ktora nesmie ticho zlyhat — z neho
   // vznika zaznam v NocoDB aj e-mail Petrovi. Ked zlyha, cely zaznam
