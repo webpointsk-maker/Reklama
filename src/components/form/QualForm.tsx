@@ -337,11 +337,20 @@ function TextStep({
   onNext: () => void;
 }) {
   const min = step.minLength ?? 0;
-  // Viacnasobne medzery sa zratavaju ako jedna — inak sa limit da obist
-  // dorovnanim medzerami a odpoved potom nema pre telefonat ziadnu hodnotu.
   const clean = value.trim().replace(/\s+/g, " ");
-  const words = clean ? clean.split(" ").length : 0;
-  const ok = clean.length >= min && words >= 6;
+
+  /**
+   * ZAMERNE BEZ VYSOKEHO MINIMA.
+   *
+   * Povodne sa vyzadovalo 40 znakov A ZAROVEN 6 slov, tlacidlo bolo dovtedy
+   * vypnute a otazka sa nedala preskocit. Na tomto kroku odisli tri stvrtiny
+   * ludi — 8 z 11 za tri dni, nula dokoncenych formularov.
+   *
+   * Dlzka odpovede sa nadalej boduje v scoring.ts, takze kto napise viac, ma
+   * vyssie skore. Uz ale nerozhoduje o tom, ci sa clovek vobec dostane ku
+   * kontaktnym udajom.
+   */
+  const ok = clean.length >= min;
   return (
     <div>
       <textarea
@@ -353,11 +362,7 @@ function TextStep({
       />
       <div className="mt-2 flex items-center justify-between text-xs text-ink-2">
         <span>
-          {ok
-            ? "Vďaka, to stačí."
-            : clean.length < min
-              ? `Ešte aspoň ${min - clean.length} znakov`
-              : "Napíšte to prosím celou vetou"}
+          {ok ? "Vďaka, to stačí." : "Stačí aj pár slov."}
         </span>
         <span>{clean.length}</span>
       </div>
