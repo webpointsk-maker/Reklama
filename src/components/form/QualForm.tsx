@@ -362,7 +362,7 @@ function TextStep({
       />
       <div className="mt-2 flex items-center justify-between text-xs text-ink-2">
         <span>
-          {ok ? "Vďaka, to stačí." : "Stačí aj pár slov."}
+          {clean.length > 0 ? "Vďaka, to stačí." : "Toto pole môžete preskočiť."}
         </span>
         <span>{clean.length}</span>
       </div>

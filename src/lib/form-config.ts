@@ -96,11 +96,13 @@ export const STEPS: Step[] = [
      * a pri vahe to navyse zakazuju pravidla Meta reklamy.
      */
     id: "note",
-    question: "Čo ste doteraz skúšali a prečo to nevyšlo?",
+    question: "Čo ste doteraz skúšali a prečo to nevyšlo? (nepovinné)",
     help: "Stačia dve vety. Podľa toho vieme, či vám vieme pomôcť a čo by sme robili inak.",
     type: "text",
-    // Staci cokolvek — dovod je v komentari pri `ok` v QualForm.tsx.
-    minLength: 1,
+    // 0 = da sa preskocit uplne prazdne. Ked na otazke stoji "nepovinne",
+    // musi to platit — inak stranka klame. Dovod v komentari pri `ok`
+    // v QualForm.tsx.
+    minLength: 0,
     placeholder:
       "Napríklad: chodil som do posilňovne sám, ale po mesiaci ma to prestalo baviť, lebo som nevidel žiadnu zmenu a nevedel som, či cvičím správne.",
   },
