@@ -97,7 +97,7 @@ export const STEPS: Step[] = [
      */
     id: "note",
     question: "Čo ste doteraz skúšali a prečo to nevyšlo?",
-    help: "Stačia dve vety, aj krátka odpoveď je v poriadku. Podľa toho vieme, či vám vieme pomôcť.",
+    help: "Stačia dve vety. Podľa toho vieme, či vám vieme pomôcť a čo by sme robili inak.",
     type: "text",
     // Staci cokolvek — dovod je v komentari pri `ok` v QualForm.tsx.
     minLength: 1,
