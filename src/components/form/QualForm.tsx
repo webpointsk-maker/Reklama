@@ -202,7 +202,18 @@ export default function QualForm() {
       }
     }
 
-    router.push(data.qualified ? "/dakujeme" : "/dakujeme-neskor");
+    /**
+     * VSETCI IDU NA ROVNAKU DAKOVNU STRANKU.
+     *
+     * Nekvalifikovany lead tu koncil na /dakujeme-neskor s textom
+     * "Volať vám zatiaľ nebudem". Trener vola kazdemu — takze to bolo
+     * nepravdive a zaroven to posobilo ako odmietnutie cloveka, ktory
+     * prave nechal svoje cislo.
+     *
+     * Triedenie na horuci/chladny ostava, ale vidi ho len trener
+     * v tabulke a vo svojom e-maile.
+     */
+    router.push("/dakujeme");
   }
 
   // Pruh sa plni podla poradia otazky. Percenta zamerne neuvadzame —
