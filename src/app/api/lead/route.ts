@@ -92,38 +92,55 @@ export async function POST(req: NextRequest) {
 
   const poznamka = disqNote;
 
-  // Odoslanie do n8n je jedina cast, ktora nesmie ticho zlyhat — z neho
-  // vznika zaznam v NocoDB aj e-mail Petrovi. Ked zlyha, cely zaznam
-  // skonci v logu, odkial sa da vytiahnut rucne.
-  await posliDoN8n({
-    druh: "lead",
-    leadId,
-    cas: new Date().toISOString(),
-    stav: "Nový",
-    skore: result.score,
-    pasmo: result.band,
-    kategoria: KATEGORIA[result.band],
-    ozvatSaDo: result.contactWithinMinutes
-      ? `${result.contactWithinMinutes} min`
-      : "neozývať sa",
-    kvalifikovany: result.qualified,
-    meno: summary.name,
-    telefon: summary.phone,
-    email: summary.email,
-    profil: summary.social,
-    kedyVolat: summary.callTime,
-    ciel: labels["Cieľ"],
-    uroven: labels["Úroveň"],
-    frekvencia: labels["Frekvencia"],
-    kedyZacat: labels["Kedy začať"],
-    coSkusal: (answers.note ?? "").slice(0, 500),
-    poznamka,
-    zdroj: req.headers.get("referer") ?? "",
-  });
+  /**
+   * NEKVALIFIKOVANY LEAD SA NIKAM NEPOSIELA — rozhodnutie zadavatela.
+   *
+   * Clovek, ktory na otazku "Kedy chcete zacat" odpovedal "Zatiaľ len
+   * zisťujem možnosti", uvidi stranku /dakujeme-nesedi a tym to konci:
+   * ziadny riadok v tabulke, ziadny e-mail jemu ani trenerovi.
+   *
+   * POZOR, CO TO ZNAMENA: jeho meno, telefon a e-mail sa zahodia. Ked sa
+   * o pol roka rozhodne zacat, nema sa kto ozvat — v systeme po nom
+   * neostane ziadna stopa. Ak sa to ma zmenit, staci tuto podmienku
+   * odstranit a lead bude chodit ako chladny.
+   *
+   * Odoslanie do n8n je jedina cast, ktora nesmie ticho zlyhat — z neho
+   * vznika zaznam v NocoDB aj e-mail Petrovi. Ked zlyha, cely zaznam
+   * skonci v logu, odkial sa da vytiahnut rucne.
+   */
+  if (result.qualified) {
+    await posliDoN8n({
+      druh: "lead",
+      leadId,
+      cas: new Date().toISOString(),
+      stav: "Nový",
+      skore: result.score,
+      pasmo: result.band,
+      kategoria: KATEGORIA[result.band],
+      ozvatSaDo: result.contactWithinMinutes
+        ? `${result.contactWithinMinutes} min`
+        : "neozývať sa",
+      kvalifikovany: result.qualified,
+      meno: summary.name,
+      telefon: summary.phone,
+      email: summary.email,
+      profil: summary.social,
+      kedyVolat: summary.callTime,
+      ciel: labels["Cieľ"],
+      uroven: labels["Úroveň"],
+      frekvencia: labels["Frekvencia"],
+      kedyZacat: labels["Kedy začať"],
+      coSkusal: (answers.note ?? "").slice(0, 500),
+      poznamka,
+      zdroj: req.headers.get("referer") ?? "",
+    });
+  }
 
   await Promise.allSettled([
-    mailLead(summary, result.qualified),
-    mailTeam(summary),
+    // Zalozne e-maily cez Resend — pri nekvalifikovanom leade sa
+    // neposielaju z rovnakeho dovodu ako zapis vyssie.
+    result.qualified ? mailLead(summary, true) : Promise.resolve(),
+    result.qualified ? mailTeam(summary) : Promise.resolve(),
     result.qualified
       ? sendCapiEvent({
           eventName: "Lead",

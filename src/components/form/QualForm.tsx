@@ -203,17 +203,15 @@ export default function QualForm() {
     }
 
     /**
-     * VSETCI IDU NA ROVNAKU DAKOVNU STRANKU.
+     * Kto neprešiel filtrom, vidi inu dakovnu stranku — znenie urcil
+     * zadavatel. V praxi sa sem dostane iba clovek, ktory na otazku
+     * "Kedy chcete zacat" odpovedal "Zatiaľ len zisťujem možnosti".
      *
-     * Nekvalifikovany lead tu koncil na /dakujeme-neskor s textom
-     * "Volať vám zatiaľ nebudem". Trener vola kazdemu — takze to bolo
-     * nepravdive a zaroven to posobilo ako odmietnutie cloveka, ktory
-     * prave nechal svoje cislo.
-     *
-     * Triedenie na horuci/chladny ostava, ale vidi ho len trener
-     * v tabulke a vo svojom e-maile.
+     * Lead sa NAPRIEK TOMU ulozi do tabulky aj posle trenerovi. Ziadny
+     * text uz nikde nehovori, ze sa neozveme — len ta jedna veta o tom,
+     * ze to pre neho nie je.
      */
-    router.push("/dakujeme");
+    router.push(data.qualified ? "/dakujeme" : "/dakujeme-nesedi");
   }
 
   // Pruh sa plni podla poradia otazky. Percenta zamerne neuvadzame —
