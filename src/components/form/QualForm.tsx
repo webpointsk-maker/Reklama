@@ -175,7 +175,10 @@ export default function QualForm() {
     }
 
     /**
-     * Udalost Lead pre Metu.
+     * Udalost Lead pre Metu sa NEODOSIELA TU, ale az na dakovnej stranke
+     * (komponent LeadPixel). Zadavatel chce zapocitat iba leady, ktore
+     * na nu naozaj dosli — inak by v adrese udalosti nebolo /dakujeme
+     * a vlastna konverzia s takym pravidlom by nikdy nesadla.
      *
      * IBA PRI KVALIFIKOVANOM LEADE. Keby sme hlasili kazde odoslanie
      * formulara, Meta by sa naucila dorucovat najlacnejsie publikum —
@@ -183,22 +186,15 @@ export default function QualForm() {
      *
      * eventID je rovnake ako leadId a ako event_id v Conversions API,
      * takze Meta obe cesty spari a nezapocita jeden lead dvakrat.
-     *
-     * fbq existuje len po suhlase v cookie liste. Vlastny try/catch je
-     * zamerne: blokovac reklam vie fbq nahradit necim, co vyhodi vynimku,
-     * a nezmerana konverzia nesmie vyzerat ako neodoslany formular.
      */
     if (data.qualified) {
       try {
-        const fbq = (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq;
-        fbq?.(
-          "track",
-          "Lead",
-          data.score !== undefined ? { value: data.score, currency: "EUR" } : {},
-          { eventID: leadId },
+        sessionStorage.setItem(
+          "wp-lead-meta",
+          JSON.stringify({ leadId, value: data.score }),
         );
-      } catch (err) {
-        console.warn("[formulár] meranie konverzie zlyhalo:", err);
+      } catch {
+        /* sukromne okno — konverzia sa nezmeria, lead je ulozeny tak ci tak */
       }
     }
 

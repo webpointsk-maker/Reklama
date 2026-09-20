@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/Hero";
+import LeadPixel from "@/components/LeadPixel";
 import { BRAND } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -21,6 +22,8 @@ export const metadata: Metadata = {
 export default function Dakujeme() {
   return (
     <main className="min-h-screen px-5 py-10">
+      {/* Odosle Mete udalost Lead — az tu, nie pri odoslani formulara. */}
+      <LeadPixel />
       <div className="mx-auto w-full max-w-3xl">
         <div className="mb-8">
           <Logo />
