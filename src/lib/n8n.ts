@@ -13,16 +13,33 @@
  * ZA CO TO PLATIME: ked je n8n nedostupne, lead sa neulozi nikam. Preto
  * sa neuspech loguje ako chyba (nie warning) a cely zaznam ide do logu,
  * odkial sa da vytiahnut rucne.
+ *
+ * JEDEN LEAD = DVE ODOSLANIA S ROVNAKYM leadId (pole `faza`).
+ * Kontakt je vo formulari hned na druhom kroku a zvysne otazky su
+ * nepovinne. Lead preto odide uz po zadani telefonu (faza "kontakt")
+ * a este raz na konci formulara ("dokoncene"). Odpovede medzi tym idu
+ * iba ako "rozpracovane".
+ * Workflow v n8n musi zaznam v NocoDB podla leadId AKTUALIZOVAT (upsert),
+ * nie zakladat novy — a e-mail Petrovi posielat iba pri faze "kontakt".
  */
 
-/** Co sa posiela: hotovy lead alebo rozpracovany formular. */
+/** Co sa posiela: lead (uz ma kontakt a suhlas) alebo rozpracovany formular. */
 export type DruhZaznamu = "lead" | "rozpracovane";
+
+/**
+ * Faza leadu.
+ *   kontakt    = prave zadal meno a telefon; jediny okamih na e-mail Petrovi
+ *   dokoncene  = presiel formular do konca, alebo ho formular zastavil
+ *                (pasmo D — "Zatiaľ sa len obzerám")
+ */
+export type FazaLeadu = "kontakt" | "dokoncene";
 
 export interface N8nLead {
   druh: DruhZaznamu;
   leadId: string;
   cas: string;
   /** vyplnene len pri druh === "lead" */
+  faza?: FazaLeadu;
   stav?: string;
   skore?: number;
   pasmo?: string;
@@ -35,15 +52,18 @@ export interface N8nLead {
 
   meno: string;
   telefon: string;
+  /** e-mail sa uz nezbiera — posiela sa prazdny, aby tvar zaznamu ostal */
   email: string;
   /** nepovinny odkaz na profil na socialnej sieti */
   profil: string;
   kedyVolat: string;
 
   ciel: string;
+  /** otazka na uroven bola odstranena — posiela sa prazdne */
   uroven: string;
   frekvencia: string;
   kedyZacat: string;
+  /** otvorena otazka bola odstranena — posiela sa prazdne */
   coSkusal: string;
 
   poznamka: string;

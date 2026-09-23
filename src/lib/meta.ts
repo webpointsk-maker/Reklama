@@ -27,7 +27,12 @@ function normalizePhone(phone: string): string {
 }
 
 export interface CapiInput {
-  eventName: "Lead" | "Purchase" | "InitiateCheckout" | "ViewContent";
+  /**
+   * "Contact" = clovek zadal telefon (2. krok formulara) — zaklad pre
+   * retargeting tych, co zvysok nedoklikali. Optimalizovat reklamu treba
+   * dalej na "Lead", ten ide iba pri kvalifikovanom leade.
+   */
+  eventName: "Lead" | "Contact" | "Purchase" | "InitiateCheckout" | "ViewContent";
   eventId: string;
   email?: string;
   phone?: string;

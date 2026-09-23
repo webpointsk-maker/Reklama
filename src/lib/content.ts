@@ -116,7 +116,7 @@ export const HERO = {
     "Systém na mieru, bezpečné tréningy pod odborným dohľadom a neustála " +
     "podpora vždy, keď ju potrebujete.",
   cta: "Chcem nezáväznú konzultáciu",
-  ctaNote: "2 minúty · 5 otázok · konzultácia po telefóne zadarmo",
+  ctaNote: "1 minúta · 4 krátke kroky · konzultácia po telefóne zadarmo",
   // Ked pribudne video, sem pride ID z YouTube (nastavene ako "nezaradene").
   // Kym je prazdne, hero video blok vobec nezobrazuje.
   youtubeId: "",
@@ -363,7 +363,7 @@ export const REVIEW_SHOTS: { src: string; alt: string }[] = [];
 export const PROCESS = [
   {
     t: "Vyplníte formulár",
-    d: "Päť otázok, dve minúty. Potrebujeme vedieť, či vám vieme reálne pomôcť.",
+    d: "Štyri krátke kroky, zaberie to minútu. Podľa odpovedí vieme, či vám vieme reálne pomôcť.",
   },
   {
     t: "Zavoláme vám",

@@ -23,9 +23,11 @@ export interface LeadSummary {
   leadId: string;
   name: string;
   phone: string;
+  /** formular e-mail uz nezbiera — prazdny, ak ho nemame */
   email: string;
   social: string;
   callTime: string;
+  /** poznamka pre trenera — dovod diskvalifikacie, nedokonceny formular */
   blocker: string;
   score: number;
   band: Band;
@@ -35,6 +37,9 @@ export interface LeadSummary {
 /* ---------------- e-mail leadovi ---------------- */
 
 export async function mailLead(lead: LeadSummary, qualified: boolean) {
+  // Formular sa na e-mail nepyta — kym ho lead nema, potvrdenie nema kam ist.
+  if (!lead.email) return;
+
   const subject = qualified
     ? "Máme váš formulár — ozveme sa vám dnes"
     : "Ďakujeme za vyplnenie formulára";
@@ -86,7 +91,7 @@ export async function mailTeam(lead: LeadSummary) {
     "",
     `Meno:      ${lead.name}`,
     `Telefón:   ${lead.phone}`,
-    `E-mail:    ${lead.email}`,
+    `E-mail:    ${lead.email || "—"}`,
     `Profil:    ${lead.social || "—"}`,
     `Volať:     ${lead.callTime}`,
     "",

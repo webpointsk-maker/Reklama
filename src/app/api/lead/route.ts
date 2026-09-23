@@ -5,20 +5,29 @@ import { scoreLead, KATEGORIA } from "@/lib/scoring";
 import { posliDoN8n } from "@/lib/n8n";
 import { mailLead, mailTeam, type LeadSummary } from "@/lib/notify";
 import { sendCapiEvent } from "@/lib/meta";
+import { normalizePhone } from "@/lib/phone";
 
 export const runtime = "nodejs";
 
+/**
+ * Chyby validacie sa vracaju S NAZVOM POLA, aby formular vedel ukazat,
+ * co presne je zle. Predtym prisla iba "neplatné údaje" a clovek videl
+ * "Odoslanie sa nepodarilo" — nevedel, co opravit, a odisiel.
+ */
 const schema = z.object({
   leadId: z.string().min(1).max(64),
-  answers: z.record(z.string(), z.string().max(2000)),
+  faza: z.enum(["kontakt", "dokoncene"]),
+  answers: z.record(z.string(), z.string().max(200)),
   contact: z.object({
-    name: z.string().min(2).max(120),
-    phone: z.string().min(6).max(40),
-    email: z.string().email().max(160),
-    social: z.string().max(300).optional().default(""),
-    callTime: z.string().max(40).optional().default("any"),
+    name: z.string().trim().min(2).max(120),
+    phone: z
+      .string()
+      .max(40)
+      .refine((v) => normalizePhone(v) !== null),
     consent: z.literal(true),
   }),
+  /** pasca na boty — clovek ju nevidi, takze ju nevyplni */
+  hp: z.string().max(300).optional().default(""),
 });
 
 /** Prevod ID moznosti na citatelny text pre tabulku a e-mail. */
@@ -28,60 +37,58 @@ function labelFor(stepId: string, optionId?: string): string {
   return step?.options?.find((o) => o.id === optionId)?.label ?? optionId;
 }
 
-const CALL_TIME_LABEL: Record<string, string> = {
-  morning: "dopoludnia",
-  afternoon: "popoludní",
-  evening: "podvečer",
-  any: "kedykoľvek",
-};
-
 /**
  * Preco lead nejde na telefonat — kluc je "krok:moznost".
  *
- * Bez tohto by Petrovi prisiel e-mail s nalepkou "Nevhodný" a ziadnym
- * vysvetlenim. Takto vidi dovod a vie sa rozhodnut sam.
+ * Takych leadov zadavatel NECHCE: formular cloveka po tejto odpovedi
+ * dalej nepusti a ukaze mu stranku /dakujeme-nesedi. Jeho cislo uz ale
+ * v tabulke je (kontakt je na druhom kroku), preto tu musi jasne stat,
+ * ze sa mu volat nema.
  */
 const DISQ_REASON: Record<string, string> = {
-  "start:later": "zatiaľ len zisťuje možnosti, začať nechce",
+  "start:later": "NEVOLAŤ — zatiaľ sa len obzerá, formulár ho ďalej nepustil",
 };
 
 export async function POST(req: NextRequest) {
-  let parsed;
+  let body: unknown;
   try {
-    parsed = schema.parse(await req.json());
+    body = await req.json();
   } catch {
     return NextResponse.json({ error: "neplatné údaje" }, { status: 400 });
   }
 
-  const { leadId, answers, contact } = parsed;
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) {
+    const field = parsed.error.issues[0]?.path.at(-1);
+    return NextResponse.json(
+      { error: "neplatné údaje", field: typeof field === "string" ? field : null },
+      { status: 400 },
+    );
+  }
+
+  const { leadId, faza, answers, contact, hp } = parsed.data;
+
+  // Bot vyplnil skryte pole. Tvarime sa, ze vsetko prebehlo — nech to
+  // neskusa znova inak — ale nikam nic neposielame.
+  if (hp) {
+    console.warn("[lead] pasca na boty zachytila odoslanie:", leadId);
+    return NextResponse.json({ qualified: true, band: "C", score: 0 });
+  }
+
+  const phone = normalizePhone(contact.phone)!;
   const result = scoreLead(answers);
 
   const labels = {
     "Cieľ": labelFor("goal", answers.goal),
-    "Úroveň": labelFor("level", answers.level),
     "Frekvencia": labelFor("frequency", answers.frequency),
     "Kedy začať": labelFor("start", answers.start),
   };
 
-  const summary: LeadSummary = {
-    leadId,
-    name: contact.name,
-    phone: contact.phone,
-    email: contact.email,
-    social: contact.social ?? "",
-    callTime: CALL_TIME_LABEL[contact.callTime ?? "any"] ?? "kedykoľvek",
-    blocker: answers.note ?? "",
-    score: result.score,
-    band: result.band,
-    labels,
-  };
-
   /**
-   * POZNAMKA JE LEN DOVOD, ziadny pokyn.
+   * POZNAMKA: dovod pasma D, alebo ze formular este nie je dokonceny.
    *
-   * Trener vola KAZDEMU, aj chladnym. Preto tu nesmie stat "Nevolat" —
-   * protirecilo by to tomu, na com sa zadavatel dohodol. Nalepka
-   * (horuci/chladny) povie, s akym ocakavanim ma volat, dovod povie preco.
+   * Chladnym (pasmo C) trener vola tiez — nalepka povie, s akym
+   * ocakavanim. "Nevolať" stoji iba pri pasme D, vid DISQ_REASON.
    */
   const disqNote = !result.qualified
     ? DISQUALIFYING.filter((r) => answers[r.step] === r.option)
@@ -90,68 +97,101 @@ export async function POST(req: NextRequest) {
         .join(" · ")
     : "";
 
-  const poznamka = disqNote;
+  const poznamka = [
+    faza !== "dokoncene"
+      ? "formulár zatiaľ nedokončil — ďalšie odpovede sú v Rozpracovaných"
+      : "",
+    disqNote,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const summary: LeadSummary = {
+    leadId,
+    name: contact.name,
+    phone,
+    email: "",
+    social: "",
+    // vyber casu hovoru z formulara zmizol — Peter vola kedykolvek
+    callTime: "kedykoľvek",
+    blocker: poznamka,
+    score: result.score,
+    band: result.band,
+    labels,
+  };
 
   /**
-   * NEKVALIFIKOVANY LEAD SA NIKAM NEPOSIELA — rozhodnutie zadavatela.
+   * LEAD IDE DO n8n DVAKRAT: po zadani kontaktu ("kontakt") a na konci
+   * formulara ("dokoncene"). Odpovede medzi tym idu len do Rozpracovaných.
    *
-   * Clovek, ktory na otazku "Kedy chcete zacat" odpovedal "Zatiaľ len
-   * zisťujem možnosti", uvidi stranku /dakujeme-nesedi a tym to konci:
-   * ziadny riadok v tabulke, ziadny e-mail jemu ani trenerovi.
+   * Kontakt je vo formulari na druhom kroku a zvysok je nepovinny, takze
+   * lead musi odist hned po zadani telefonu. Kto neskor oznaci "Zatiaľ sa
+   * len obzerám", formular skonci a lead sa prepise na pasmo D s poznamkou
+   * NEVOLAŤ.
    *
-   * POZOR, CO TO ZNAMENA: jeho meno, telefon a e-mail sa zahodia. Ked sa
-   * o pol roka rozhodne zacat, nema sa kto ozvat — v systeme po nom
-   * neostane ziadna stopa. Ak sa to ma zmenit, staci tuto podmienku
-   * odstranit a lead bude chodit ako chladny.
+   * Obe fazy posielaju ten isty leadId. n8n ho musi AKTUALIZOVAT, nie
+   * pridat ako novy riadok. Vid komentar v src/lib/n8n.ts.
    *
-   * Odoslanie do n8n je jedina cast, ktora nesmie ticho zlyhat — z neho
-   * vznika zaznam v NocoDB aj e-mail Petrovi. Ked zlyha, cely zaznam
-   * skonci v logu, odkial sa da vytiahnut rucne.
+   * Odoslanie do n8n nesmie ticho zlyhat — z neho vznika zaznam v NocoDB
+   * aj e-mail Petrovi. Ked zlyha, cely zaznam skonci v logu, odkial sa da
+   * vytiahnut rucne.
    */
-  if (result.qualified) {
-    await posliDoN8n({
-      druh: "lead",
-      leadId,
-      cas: new Date().toISOString(),
-      stav: "Nový",
-      skore: result.score,
-      pasmo: result.band,
-      kategoria: KATEGORIA[result.band],
-      ozvatSaDo: result.contactWithinMinutes
-        ? `${result.contactWithinMinutes} min`
-        : "neozývať sa",
-      kvalifikovany: result.qualified,
-      meno: summary.name,
-      telefon: summary.phone,
-      email: summary.email,
-      profil: summary.social,
-      kedyVolat: summary.callTime,
-      ciel: labels["Cieľ"],
-      uroven: labels["Úroveň"],
-      frekvencia: labels["Frekvencia"],
-      kedyZacat: labels["Kedy začať"],
-      coSkusal: (answers.note ?? "").slice(0, 500),
-      poznamka,
-      zdroj: req.headers.get("referer") ?? "",
-    });
-  }
+  await posliDoN8n({
+    druh: "lead",
+    faza,
+    leadId,
+    cas: new Date().toISOString(),
+    stav: "Nový",
+    skore: result.score,
+    pasmo: result.band,
+    kategoria: KATEGORIA[result.band],
+    ozvatSaDo: result.contactWithinMinutes
+      ? `${result.contactWithinMinutes} min`
+      : "neozývať sa",
+    kvalifikovany: result.qualified,
+    meno: summary.name,
+    telefon: summary.phone,
+    email: "",
+    profil: "",
+    kedyVolat: summary.callTime,
+    ciel: labels["Cieľ"],
+    uroven: "",
+    frekvencia: labels["Frekvencia"],
+    kedyZacat: labels["Kedy začať"],
+    coSkusal: "",
+    poznamka,
+    zdroj: req.headers.get("referer") ?? "",
+  });
+
+  const metaBase = {
+    phone,
+    clientIp: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    userAgent: req.headers.get("user-agent") ?? undefined,
+    fbp: req.cookies.get("_fbp")?.value,
+    fbc: req.cookies.get("_fbc")?.value,
+    sourceUrl: req.headers.get("referer") ?? undefined,
+  };
 
   await Promise.allSettled([
-    // Zalozne e-maily cez Resend — pri nekvalifikovanom leade sa
-    // neposielaju z rovnakeho dovodu ako zapis vyssie.
-    result.qualified ? mailLead(summary, true) : Promise.resolve(),
-    result.qualified ? mailTeam(summary) : Promise.resolve(),
-    result.qualified
+    // Zalozny e-mail trenerovi cez Resend — iba raz, pri zadani kontaktu.
+    faza === "kontakt" ? mailTeam(summary) : Promise.resolve(),
+    faza === "dokoncene" && result.qualified
+      ? mailLead(summary, true)
+      : Promise.resolve(),
+
+    // "Contact" = zadal telefon. Zaklad pre retargeting, ide kazdemu.
+    // eventID sa zhoduje s tym v prehliadaci (QualForm), Meta ich sparuje.
+    faza === "kontakt"
+      ? sendCapiEvent({ eventName: "Contact", eventId: `${leadId}-contact`, ...metaBase })
+      : Promise.resolve(),
+
+    // "Lead" IBA pri kvalifikovanom a dokoncenom — na tuto udalost sa
+    // optimalizuje reklama, preto do nej nesmu tiect ti, co filtrom neprešli.
+    faza === "dokoncene" && result.qualified
       ? sendCapiEvent({
           eventName: "Lead",
           eventId: leadId,
-          email: contact.email,
-          phone: contact.phone,
-          clientIp: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim(),
-          userAgent: req.headers.get("user-agent") ?? undefined,
-          fbp: req.cookies.get("_fbp")?.value,
-          fbc: req.cookies.get("_fbc")?.value,
-          sourceUrl: req.headers.get("referer") ?? undefined,
+          ...metaBase,
           value: result.score,
         })
       : Promise.resolve(),

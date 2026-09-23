@@ -39,6 +39,8 @@
 
   /* semanticke */
   --color-good: #1c8a5a;
+  /* chyby vo formulari — modra chyba splyvala s tlacidlami a nikto si ju nevsimol */
+  --color-bad: #c0352b;
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 

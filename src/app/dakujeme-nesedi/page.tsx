@@ -11,13 +11,14 @@ export const metadata: Metadata = {
 /**
  * Dakovna stranka pre leady, ktore neprešli filtrom.
  *
- * KTO SEM PRIDE: v praxi iba clovek, ktory na otazku "Kedy chcete zacat"
- * odpovedal "Zatiaľ len zisťujem možnosti". Pri ostatnych kombinaciach sa
- * na pasmo D neda dostat — najnizsie mozne skore s inou odpovedou je 38
- * a hranica je 30.
+ * KTO SEM PRIDE: iba clovek, ktory na otazku "Kedy chcete začať?"
+ * odpovedal "Zatiaľ sa len obzerám". Formular ho po tejto odpovedi dalej
+ * nepusti a posle rovno sem. Pasmo D inak nevznika — nizke skore
+ * z chybajucich odpovedi znamena len pasmo C.
  *
- * Znenie urcil zadavatel. Lead sa NAPRIEK TOMU ulozi do tabulky aj posle
- * trenerovi — clovek tu nikam nezmizne, len dostane inu spatnu vazbu.
+ * Znenie urcil zadavatel. Takych leadov nechce: jeho cislo uz v tabulke
+ * je (kontakt je na druhom kroku), ale riadok dostane pasmo D
+ * a poznamku NEVOLAŤ.
  */
 export default function DakujemeNesedi() {
   return (

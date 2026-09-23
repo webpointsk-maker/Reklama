@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 /**
  * NAVRH na pravnu kontrolu, nie pravny posudok.
  *
- * Vychadza z toho, co stranka realne robi: formular zbiera meno, telefon,
- * e-mail a odpovede, priebezne uklada rozpracovane vyplnenie, zapisuje do
+ * Vychadza z toho, co stranka realne robi: formular zbiera meno, telefon
+ * a odpovede, priebezne uklada rozpracovane vyplnenie, zapisuje do
  * Google Sheets, posiela e-maily cez Resend, notifikuje na Telegram a pri
  * kvalifikovanom leade odosiela udalost do Meta Conversions API.
  *
@@ -37,10 +37,9 @@ export default function OchranaUdajov() {
 
       <H2>Aké údaje zbierame a prečo</H2>
       <P>
-        Cez formulár na tejto stránke zbierame meno a priezvisko, telefónne
-        číslo, e-mailovú adresu, nepovinný odkaz na profil na sociálnej sieti,
-        preferovaný čas hovoru a vaše odpovede na otázky o tréningových cieľoch
-        a doterajších skúsenostiach.
+        Cez formulár na tejto stránke zbierame meno, telefónne číslo a vaše
+        odpovede na otázky o tréningovom cieli, o tom, koľkokrát týždenne
+        stihnete cvičiť, a kedy chcete začať.
       </P>
       <P>
         Účelom je jediná vec: ozvať sa vám a na telefonáte zistiť, či vám vieme
@@ -54,11 +53,10 @@ export default function OchranaUdajov() {
 
       <H2>Rozpracovaný formulár</H2>
       <P>
-        Ak formulár začnete vypĺňať a nedokončíte ho, vaše doterajšie odpovede
-        sa priebežne ukladajú. Robíme to preto, aby sme vedeli, kde ľuďom
-        vypĺňanie prestane dávať zmysel, a formulár podľa toho zjednodušili.
-        Kým nevyplníte kontaktné údaje, nevieme, o koho ide, a ozvať sa vám
-        nemôžeme.
+        Meno a telefónne číslo sa uložia hneď, ako ich do formulára vpíšete —
+        aj keď formulár neodošlete. Robíme to preto, aby sa nestratil dopyt,
+        ktorý sa pri vypĺňaní preruší. Odpovede na otázky za kontaktnými
+        údajmi sa priebežne dopĺňajú k vášmu dopytu.
       </P>
 
       <H2>Komu sa údaje dostanú</H2>
@@ -84,10 +82,10 @@ export default function OchranaUdajov() {
         cookies.
       </P>
       <P>
-        Pri odoslanom formulári posielame spoločnosti Meta informáciu o tom, že
-        došlo ku kontaktu. Vaša e-mailová adresa a telefónne číslo sa pritom
-        odosielajú výhradne v zašifrovanej podobe (hash), z ktorej sa pôvodný
-        údaj nedá spätne prečítať.
+        Keď vo formulári zadáte kontakt, posielame spoločnosti Meta informáciu
+        o tom, že došlo ku kontaktu. Vaše telefónne číslo sa pritom odosiela
+        výhradne v zašifrovanej podobe (hash), z ktorej sa pôvodný údaj nedá
+        spätne prečítať.
       </P>
 
       <H2>Ako dlho údaje držíme</H2>

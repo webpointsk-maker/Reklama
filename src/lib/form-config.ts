@@ -3,12 +3,15 @@
  * Zdroj pravdy pre klientský formulár aj pre serverové skórovanie.
  * Zmena znenia otázok alebo možností sa robí TU, nikde inde.
  *
- * PRECO JE TENTO FORMULAR KRATSI NEZ VO WEBPOINTE:
- * tam sa kvalifikoval podnikatel na sluzbu za 600 € mesacne, tu clovek
- * na osobny trening. Cena je radovo nizsia, takze aj ochota vyplnat
- * formular je nizsia. Osem otazok by tu polovicu ludi odradilo.
- * Pat otazok je horna hranica — ak budes chciet pridavat, radsej
- * najprv zvaz, ci sa to neda zistit na telefonate.
+ * PORADIE JE ZAMERNE "KONTAKT NA DRUHOM MIESTE".
+ * Povodne isiel kontakt az na koniec, za pat otazok — a prave tam vacsina
+ * ludi odisla. Teraz: jedna lahka otazka na zahriatie, hned potom meno
+ * a telefon, a za nimi uz len dve kliknutia. Lead mame, aj ked clovek
+ * zvysok neodklika.
+ *
+ * ODSTRANENE (rozhodnutie zadavatela): e-mail (volame, telefon staci),
+ * otvorena otazka "Čo ste skúšali", otazka na uroven ("Kde ste teraz"),
+ * na vaznost, na investiciu a vyber casu hovoru.
  *
  * ZAMERNE SA NEPYTAME NA VAHU, BMI ANI NA NESPOKOJNOST S POSTAVOU.
  * Je to citlivy udaj, zbytocne znizuje dokoncenost formulara a v Meta
@@ -16,7 +19,7 @@
  */
 
 
-export type StepType = "single" | "text" | "contact";
+export type StepType = "single" | "contact";
 
 export interface Option {
   id: string;
@@ -29,9 +32,6 @@ export interface Step {
   help?: string;
   type: StepType;
   options?: Option[];
-  /** minimálny počet znakov pri type "text" */
-  minLength?: number;
-  placeholder?: string;
 }
 
 export const STEPS: Step[] = [
@@ -48,20 +48,15 @@ export const STEPS: Step[] = [
     ],
   },
   {
-    id: "level",
-    question: "Kde ste teraz?",
-    type: "single",
-    options: [
-      { id: "none", label: "Necvičím vôbec" },
-      { id: "sometimes", label: "Cvičím občas, nepravidelne" },
-      { id: "regular_noresult", label: "Cvičím pravidelne, ale nikam sa to nehýbe" },
-      { id: "had_trainer", label: "Už som mal(a) trénera" },
-    ],
+    id: "contact",
+    question: "Kam vám máme zavolať?",
+    help: "Na základe vašich odpovedí vám pripravíme plán zadarmo.",
+    type: "contact",
   },
   {
     id: "frequency",
     question: "Koľkokrát týždenne reálne stihnete cvičiť?",
-    help: "Odpovedzte úprimne podľa toho, ako vyzerá bežný týždeň — nie podľa toho, ako by ste chceli, aby vyzeral.",
+    help: "Podľa bežného týždňa — nie podľa toho, ako by ste chceli, aby vyzeral.",
     type: "single",
     options: [
       { id: "f1", label: "1×" },
@@ -77,57 +72,20 @@ export const STEPS: Step[] = [
     options: [
       { id: "now", label: "Čo najskôr" },
       { id: "month", label: "Do mesiaca" },
-      { id: "later", label: "Zatiaľ len zisťujem možnosti" },
+      { id: "later", label: "Zatiaľ sa len obzerám" },
     ],
   },
-  {
-    /**
-     * Otvorena otazka namiesto dalsieho vyberu z moznosti.
-     *
-     * PRECO PRAVE TAKATO FILTRUJE NAJLEPSIE: kto nie je ochotny napisat
-     * dve vety, nepride ani na telefonat. Vyber z moznosti sa odklikne
-     * bez rozmyslu, text nie — a to je presne ten rozdiel medzi clovekom,
-     * ktory to riesi, a clovekom, ktory sa obzera.
-     *
-     * Druhy efekt: je to jedina odpoved, s ktorou sa da zacat telefonat.
-     * Trener vie dopredu, o com hovor bude.
-     *
-     * Nepyta sa na peniaze ani na vahu — oboje znizuje dokoncenost
-     * a pri vahe to navyse zakazuju pravidla Meta reklamy.
-     */
-    id: "note",
-    question: "Čo ste doteraz skúšali a prečo to nevyšlo? (nepovinné)",
-    help: "Stačia dve vety. Podľa toho vieme, či vám vieme pomôcť a čo by sme robili inak.",
-    type: "text",
-    // 0 = da sa preskocit uplne prazdne. Ked na otazke stoji "nepovinne",
-    // musi to platit — inak stranka klame. Dovod v komentari pri `ok`
-    // v QualForm.tsx.
-    minLength: 0,
-    placeholder:
-      "Napríklad: chodil som do posilňovne sám, ale po mesiaci ma to prestalo baviť, lebo som nevidel žiadnu zmenu a nevedel som, či cvičím správne.",
-  },
-  {
-    id: "contact",
-    question: "Kam sa vám máme ozvať?",
-    type: "contact",
-  },
 ];
 
-export const CALL_TIME_OPTIONS: Option[] = [
-  { id: "morning", label: "Dopoludnia (9 – 12)" },
-  { id: "afternoon", label: "Popoludní (12 – 17)" },
-  { id: "evening", label: "Podvečer (17 – 20)" },
-  { id: "any", label: "Kedykoľvek" },
-];
+/** Index kontaktneho kroku — vsetko pred nim je rozohrievka, za nim doplnky. */
+export const CONTACT_INDEX = STEPS.findIndex((s) => s.type === "contact");
 
 /**
- * Odpovede, po ktorych lead nejde na telefonat.
+ * Odpovede, po ktorych formular SKONCI a dalej cloveka nepusti.
  *
- * Nevyhadzujeme ho — dostane inu dakovnu stranku bez ponuky a ozve sa
- * sam, ked bude pripraveny. Dnesne "este nie" byva buducorocny klient.
- *
- * Otazka na dostupnost tu bola a bola odstranena — Peter robi aj online
- * vedenie, takze mesto nerozhoduje o tom, ci sa da spolupracovat.
+ * Takych leadov zadavatel nechce. Clovek uvidi stranku /dakujeme-nesedi
+ * ("na základe vašich odpovedí to nie je pre vás") a v tabulke dostane
+ * pasmo D s poznamkou NEVOLAŤ.
  */
 export const DISQUALIFYING: { step: string; option: string }[] = [
   { step: "start", option: "later" },

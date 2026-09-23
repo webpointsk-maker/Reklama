@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { STEPS } from "@/lib/form-config";
 import { posliDoN8n } from "@/lib/n8n";
+import { normalizePhone } from "@/lib/phone";
 
 export const runtime = "nodejs";
 
 /**
- * Priebezne ukladanie rozpracovaneho formulara.
+ * Ulozenie kontaktu HNED, ako ho clovek napise — este pred odoslanim.
  *
- * Preco to existuje: clovek, ktory vyplnil pat otazok a odisiel, uz o sebe
- * povedal dost na to, aby sa oplatilo ozvat sa mu — ak stihol nechat kontakt.
- *
- * Zaznamy idu do n8n s druhom "rozpracovane". Workflow si ich odlozi inam
+ * Formular sem posiela meno a telefon pri opusteni pola (blur). Kto cislo
+ * napise a potom zavrie stranku bez kliknutia na tlacidlo, nie je strateny:
+ * zaznam ide do n8n s druhom "rozpracovane". Workflow si ich odlozi inam
  * nez hotove leady a deduplikuje ich po leadId: platny je vzdy posledny.
+ *
+ * Ukladame iba vtedy, ked je v poli cislo, ktore sa da vytocit. Bez neho
+ * sa nemame komu ozvat a zaznam nema cenu.
  */
 export async function POST(req: NextRequest) {
   try {
@@ -22,8 +25,8 @@ export async function POST(req: NextRequest) {
     const answers = (body?.answers ?? {}) as Record<string, string>;
     const contact = (body?.contact ?? {}) as Record<string, string>;
 
-    // Ukladame az od tretej otazky — skorsie odchody nemaju vypovednu hodnotu.
-    if (Object.keys(answers).length < 3) {
+    const phone = normalizePhone(String(contact.phone ?? ""));
+    if (!phone || body?.hp) {
       return NextResponse.json({ ok: true, skipped: true });
     }
 
@@ -38,17 +41,17 @@ export async function POST(req: NextRequest) {
       druh: "rozpracovane",
       leadId,
       cas: new Date().toISOString(),
-      odisielNaKroku: String(body?.step ?? ""),
-      meno: contact.name ?? "",
-      telefon: contact.phone ?? "",
-      email: contact.email ?? "",
-      profil: contact.social ?? "",
-      kedyVolat: contact.callTime ?? "",
+      odisielNaKroku: String(body?.step ?? "").slice(0, 40),
+      meno: String(contact.name ?? "").slice(0, 120),
+      telefon: phone,
+      email: "",
+      profil: "",
+      kedyVolat: "kedykoľvek",
       ciel: label("goal"),
-      uroven: label("level"),
+      uroven: "",
       frekvencia: label("frequency"),
       kedyZacat: label("start"),
-      coSkusal: (answers.note ?? "").slice(0, 500),
+      coSkusal: "",
       poznamka: "",
       zdroj: req.headers.get("referer") ?? "",
     });

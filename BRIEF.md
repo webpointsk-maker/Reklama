@@ -319,3 +319,42 @@ Kontaktná cesta, farby aj texty sú hotové. Ostáva pravda a právne veci:
   vlastnú štruktúru (`REVIEWS` — text, autor, zdroj) a sadzia sa do troch
   stĺpcov, lebo majú veľmi rôzne dĺžky. Ďakovná stránka ukazuje pred hovorom
   dve z nich.
+
+## Čo sa spravilo 23. 9. 2026 — prestavba formulára
+
+Väčšina ľudí odchádzala na kontaktnom kroku (bol až na konci, za piatimi
+otázkami). Formulár je teraz **4 kroky, kontakt na druhom mieste**:
+
+1. Čo chcete tréningom dosiahnuť?
+2. Meno + telefón (+ súhlas) — `Kam vám máme zavolať?`
+3. Koľkokrát týždenne reálne stihnete cvičiť? (dá sa preskočiť)
+4. Kedy chcete začať? — **„Zatiaľ sa len obzerám" formulár hneď ukončí**
+   a pošle človeka na `/dakujeme-nesedi`. Takéto leady zadávateľ nechce;
+   v tabuľke dostanú pásmo D a poznámku `NEVOLAŤ`.
+
+**Odstránené:** e-mail, Instagram, výber času hovoru, otvorená otázka
+„Čo ste skúšali", otázka na úroveň.
+
+**Telefón** (`src/lib/phone.ts`): pole je predvyplnené `+421 `, prijme sa
+číslo s medzerami aj bez, s `+421`/`00421` aj bez, s úvodnou nulou aj bez.
+Server ho uloží v tvare `+421 905 123 456`. Chyby sa ukazujú pri konkrétnom
+poli, nie všeobecné „Odoslanie sa nepodarilo".
+
+**Ukladanie:**
+- pri opustení poľa meno/telefón → `rozpracovane` (ešte pred odoslaním)
+- po kliknutí „Chcem výsledky" → `lead`, `faza: "kontakt"`
+- odpovede na krokoch 3–4 → `rozpracovane`
+- koniec formulára → `lead`, `faza: "dokoncene"` (rovnaký `leadId`)
+
+**n8n workflow „SPerformance — Lead Capture" (upravený 23. 9. 2026):**
+- vetva `lead`: `Hľadám lead` (NocoDB podľa `LeadId`) → `Lead už máme?`
+  - nie → `NocoDB — leady` (create) → `E-mail trénerovi` — Peter dostane
+    e-mail iba raz, po zadaní telefónu
+  - áno → `Prepísať lead` (PATCH bez `Stav` a `Cas`) → ak
+    `kvalifikovany = false`, príde Petrovi e-mail „❌ Nevolať"
+- uzol „Potvrdenie klientovi" je preč — e-mail sa nezbiera
+- vetva `rozpracovane` ostala, PATCH len skladá telo cez `JSON.stringify`
+
+**Meta:** po zadaní kontaktu ide udalosť `Contact` (pixel aj CAPI, rovnaké
+eventID) — základ pre retargeting. `Lead` ostáva ako predtým: iba
+kvalifikovaný, iba na `/dakujeme`.
