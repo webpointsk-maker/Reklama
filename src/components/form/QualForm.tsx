@@ -18,7 +18,7 @@ import {
 } from "@/lib/phone";
 
 type Answers = Record<string, string>;
-type Faza = "kontakt" | "dokoncene";
+type Faza = "kontakt" | "doplnenie" | "dokoncene";
 
 interface Contact {
   name: string;
@@ -113,6 +113,8 @@ export default function QualForm() {
   const hpValue = useRef("");
   const lastDraft = useRef("");
   const advanceTimer = useRef<number | null>(null);
+  /** posledne "doplnenie" na ceste — koniec formulara musi pockat nan */
+  const pendingLead = useRef<Promise<unknown> | null>(null);
   const finishing = useRef(false);
   const topRef = useRef<HTMLDivElement>(null);
   const mounted = useRef(false);
@@ -172,10 +174,10 @@ export default function QualForm() {
   }, [index]);
 
   /**
-   * Lead ide do tabulky PRAVE DVAKRAT: po zadani kontaktu a na konci.
-   * Odpovede medzi tym idu len do "Rozpracovaných" (saveDraft) — keby kazda
-   * odpoved posielala lead, n8n bez upsertu by Petrovi zalozilo riadok
-   * a poslalo e-mail pri kazdom kliknuti.
+   * Lead ide do n8n po zadani kontaktu, po kazdej dalsej odpovedi a na
+   * konci — vzdy s rovnakym leadId. n8n riadok prvy raz vytvori, potom ho
+   * uz len prepisuje, a e-mail Petrovi posle az o par minut, poskladany
+   * z toho, co v riadku vtedy je. Preto musi byt riadok vzdy aktualny.
    */
   const sendLead = useCallback(
     (faza: Faza, nextAnswers: Answers, nextContact: Contact = contact) =>
@@ -199,23 +201,18 @@ export default function QualForm() {
   );
 
   /**
-   * Priebezne ulozenie do "Rozpracovaných" — pri opusteni pola s menom
-   * alebo telefonom (este pred kliknutim na tlacidlo) a po kazdej
-   * odpovedi za kontaktom. Kto odide v strede, jeho cislo aj posledne
-   * odpovede v tabulke ostanu.
+   * Ulozenie do "Rozpracovaných" pri opusteni pola s menom alebo telefonom
+   * — este pred kliknutim na tlacidlo. Kto napise cislo a zavrie stranku,
+   * v tabulke ostane.
    */
-  function saveDraft(
-    stepId: string,
-    nextAnswers: Answers = answers,
-    nextContact: Contact = contact,
-  ) {
-    const phone = normalizePhone(nextContact.phone);
+  function saveDraft(stepId: string) {
+    const phone = normalizePhone(contact.phone);
     if (!leadId || !phone) return;
     const payload = JSON.stringify({
       leadId,
       step: stepId,
-      answers: nextAnswers,
-      contact: { name: nextContact.name, phone },
+      answers,
+      contact: { name: contact.name, phone },
       hp: honeypot.current?.value ?? hpValue.current,
     });
     if (payload === lastDraft.current) return;
@@ -246,23 +243,21 @@ export default function QualForm() {
     }, delay);
   }
 
-  /** Vyber moznosti. Po kontakte sa kazda odpoved hned ulozi. */
-  function pick(stepId: string, optionId: string) {
-    const next = { ...answers, [stepId]: optionId };
-    setAnswers(next);
-    if (sentKey) saveDraft(stepId, next);
-    return next;
-  }
-
   function choose(stepId: string, optionId: string) {
     if (finishing.current) return;
-    const next = pick(stepId, optionId);
+    const next = { ...answers, [stepId]: optionId };
+    setAnswers(next);
 
     // Posledna otazka formular dokonci. "Zatiaľ sa len obzerám" ho
     // ukonci hned — dalej cloveka nepustime, nech je to kdekolvek.
     if (index === LAST_INDEX || isStopAnswer(stepId, optionId)) {
       finish(next);
       return;
+    }
+
+    // Po kontakte sa kazda odpoved hned dopise k leadu v tabulke.
+    if (sentKey) {
+      pendingLead.current = sendLead("doplnenie", next).catch(() => {});
     }
 
     // kratke oneskorenie, aby bolo vidiet potvrdenie volby
@@ -357,6 +352,10 @@ export default function QualForm() {
      * cloveka NEZDRZIAVAME chybovou hlaskou — kvalifikaciu si dopocitame
      * sami a pustime ho na dakovnu stranku.
      */
+    // Rychly klik: predosla odpoved este moze byt na ceste. Keby dorazila
+    // az po dokonceni, prepisala by v tabulke konecne odpovede starsimi.
+    await pendingLead.current;
+
     let data: { qualified: boolean; score?: number } | null = null;
     try {
       const res = await sendLead("dokoncene", finalAnswers);

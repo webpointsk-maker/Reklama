@@ -14,13 +14,13 @@
  * sa neuspech loguje ako chyba (nie warning) a cely zaznam ide do logu,
  * odkial sa da vytiahnut rucne.
  *
- * JEDEN LEAD = DVE ODOSLANIA S ROVNAKYM leadId (pole `faza`).
- * Kontakt je vo formulari hned na druhom kroku a zvysne otazky su
- * nepovinne. Lead preto odide uz po zadani telefonu (faza "kontakt")
- * a este raz na konci formulara ("dokoncene"). Odpovede medzi tym idu
- * iba ako "rozpracovane".
- * Workflow v n8n musi zaznam v NocoDB podla leadId AKTUALIZOVAT (upsert),
- * nie zakladat novy — a e-mail Petrovi posielat iba pri faze "kontakt".
+ * JEDEN LEAD = VIAC ODOSLANI S ROVNAKYM leadId (pole `faza`).
+ * Kontakt je vo formulari hned na druhom kroku. Lead preto odide uz po
+ * zadani telefonu ("kontakt"), po kazdej dalsej odpovedi ("doplnenie")
+ * a na konci formulara ("dokoncene").
+ * Workflow v n8n zaznam v NocoDB podla LeadId prvy raz vytvori a potom
+ * uz len prepisuje. E-mail Petrovi posiela 3 minuty po vytvoreni,
+ * poskladany z riadku v tabulke — teda so vsetkymi odpovedami.
  */
 
 /** Co sa posiela: lead (uz ma kontakt a suhlas) alebo rozpracovany formular. */
@@ -28,11 +28,12 @@ export type DruhZaznamu = "lead" | "rozpracovane";
 
 /**
  * Faza leadu.
- *   kontakt    = prave zadal meno a telefon; jediny okamih na e-mail Petrovi
+ *   kontakt    = prave zadal meno a telefon
+ *   doplnenie  = odpovedal na dalsiu otazku
  *   dokoncene  = presiel formular do konca, alebo ho formular zastavil
  *                (pasmo D — "Zatiaľ sa len obzerám")
  */
-export type FazaLeadu = "kontakt" | "dokoncene";
+export type FazaLeadu = "kontakt" | "doplnenie" | "dokoncene";
 
 export interface N8nLead {
   druh: DruhZaznamu;

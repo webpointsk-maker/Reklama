@@ -16,7 +16,7 @@ export const runtime = "nodejs";
  */
 const schema = z.object({
   leadId: z.string().min(1).max(64),
-  faza: z.enum(["kontakt", "dokoncene"]),
+  faza: z.enum(["kontakt", "doplnenie", "dokoncene"]),
   answers: z.record(z.string(), z.string().max(200)),
   contact: z.object({
     name: z.string().trim().min(2).max(120),
@@ -98,9 +98,7 @@ export async function POST(req: NextRequest) {
     : "";
 
   const poznamka = [
-    faza !== "dokoncene"
-      ? "formulár zatiaľ nedokončil — ďalšie odpovede sú v Rozpracovaných"
-      : "",
+    faza !== "dokoncene" ? "formulár nedokončil" : "",
     disqNote,
   ]
     .filter(Boolean)
@@ -121,8 +119,8 @@ export async function POST(req: NextRequest) {
   };
 
   /**
-   * LEAD IDE DO n8n DVAKRAT: po zadani kontaktu ("kontakt") a na konci
-   * formulara ("dokoncene"). Odpovede medzi tym idu len do Rozpracovaných.
+   * LEAD IDE DO n8n VIACKRAT: po zadani kontaktu ("kontakt"), po kazdej
+   * dalsej odpovedi ("doplnenie") a na konci formulara ("dokoncene").
    *
    * Kontakt je vo formulari na druhom kroku a zvysok je nepovinny, takze
    * lead musi odist hned po zadani telefonu. Kto neskor oznaci "Zatiaľ sa

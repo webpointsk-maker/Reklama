@@ -343,15 +343,17 @@ poli, nie všeobecné „Odoslanie sa nepodarilo".
 **Ukladanie:**
 - pri opustení poľa meno/telefón → `rozpracovane` (ešte pred odoslaním)
 - po kliknutí „Chcem výsledky" → `lead`, `faza: "kontakt"`
-- odpovede na krokoch 3–4 → `rozpracovane`
-- koniec formulára → `lead`, `faza: "dokoncene"` (rovnaký `leadId`)
+- každá ďalšia odpoveď → `lead`, `faza: "doplnenie"`
+- koniec formulára → `lead`, `faza: "dokoncene"` (vždy rovnaký `leadId`)
 
-**n8n workflow „SPerformance — Lead Capture" (upravený 23. 9. 2026):**
+**n8n workflow „SPerformance — Lead Capture" (v2, 23. 9. 2026):**
+- Webhook odpovedá cez uzly „Odpoveď webu", web nečaká na nič navyše
 - vetva `lead`: `Hľadám lead` (NocoDB podľa `LeadId`) → `Lead už máme?`
-  - nie → `NocoDB — leady` (create) → `E-mail trénerovi` — Peter dostane
-    e-mail iba raz, po zadaní telefónu
-  - áno → `Prepísať lead` (PATCH bez `Stav` a `Cas`) → ak
-    `kvalifikovany = false`, príde Petrovi e-mail „❌ Nevolať"
+  - nie → `NocoDB — leady` (create) → odpoveď webu → **počká 3 minúty** →
+    `Načítať lead` → ak v poznámke nie je `NEVOLAŤ`, pošle Petrovi
+    **jeden e-mail so všetkými odpoveďami** z riadku v tabuľke
+  - áno → `Prepísať lead` (PATCH bez `Stav` a `Cas`) → odpoveď webu;
+    e-mail „❌ Nevolať" len keď „obzerám sa" prišlo až po odoslaní e-mailu
 - uzol „Potvrdenie klientovi" je preč — e-mail sa nezbiera
 - vetva `rozpracovane` ostala, PATCH len skladá telo cez `JSON.stringify`
 
